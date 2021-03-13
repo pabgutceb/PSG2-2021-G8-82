@@ -27,6 +27,18 @@
 			</roles>
 			<timezone>Europe/Berlin</timezone>
 		</developer>
+        
+        <developer>
+			<id>Pabloguti01</id>
+			<name>Pablo Gutiérrez Ceballos</name>
+			<email>pabloguti1006@gmail.com</email>
+			<url>https://github.com/Pabloguti01</url>
+			<organization>G8-82</organization>
+			<roles>
+				<role>scrum master</role>
+			</roles>
+			<timezone>Europe/Berlin</timezone>
+		</developer>
 
 		<!--Añadir aqui vuestra info -->
 	</developers>

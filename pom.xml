@@ -64,7 +64,17 @@
 			<timezone>Europe/Berlin</timezone>
 		</developer>
 
-		<!--Añadir aqui vuestra info -->
+		<developer>
+			<id>estgantri</id>
+			<name>Estefanía Ganfornina Triguero</name>
+			<email>estgantri@alum.us.es</email>
+			<url>https://github.com/estefaniagan</url>
+			<organization>G8-82</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>Europe/Berlin</timezone>
+		</developer>
 	</developers>
 	
     <properties>

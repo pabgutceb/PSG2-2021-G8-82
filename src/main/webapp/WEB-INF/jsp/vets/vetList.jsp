@@ -35,7 +35,12 @@
         <tr>
             <td>
                 <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
-            </td>            
+            </td>     
+        </tr>
+        <tr>
+        	<td>
+               <a href="<spring:url value="/vets/new" htmlEscape="true" />">Create a new Veterinarian</a>
+            </td>      
         </tr>
     </table>
 </petclinic:layout>

@@ -56,23 +56,23 @@ public class Vet extends Person {
 		return this.specialties;
 	}
 
-	protected void setSpecialtiesInternal(Set<Specialty> specialties) {
+	protected void setSpecialtiesInternal(final Set<Specialty> specialties) {
 		this.specialties = specialties;
 	}
 
 	@XmlElement
 	public List<Specialty> getSpecialties() {
-		List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
+		final List<Specialty> sortedSpecs = new ArrayList<>(this.getSpecialtiesInternal());
 		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
 		return Collections.unmodifiableList(sortedSpecs);
 	}
 
 	public int getNrOfSpecialties() {
-		return getSpecialtiesInternal().size();
+		return this.getSpecialtiesInternal().size();
 	}
 
-	public void addSpecialty(Specialty specialty) {
-		getSpecialtiesInternal().add(specialty);
+	public void addSpecialty(final Specialty specialty) {
+		this.getSpecialtiesInternal().add(specialty);
 	}
 
 }

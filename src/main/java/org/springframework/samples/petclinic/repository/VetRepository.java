@@ -47,4 +47,6 @@ public interface VetRepository extends Repository<Vet, Integer>{
 	 * @see BaseEntity#isNew
 	 */
 	void save(Vet vet) throws DataAccessException;
+
+	Vet findById(int id);
 }

@@ -46,6 +46,11 @@ public class VetService {
 		return this.vetRepository.findAll();
 	}	
 	
+	@Transactional(readOnly = true)
+	public Vet findVetById(final int id) throws DataAccessException {
+		return this.vetRepository.findById(id);
+	}
+	
 	@Transactional
 	public void saveVet(final Vet vet) throws DataAccessException {
 		//creating vet

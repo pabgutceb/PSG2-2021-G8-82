@@ -7,6 +7,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="vets">
+	 <jsp:body>
     <h2>
         <c:if test="${vet['new']}">New </c:if> Veterinary
     </h2>
@@ -15,7 +16,7 @@
             <petclinic:inputField label="First Name" name="firstName"/>
             <petclinic:inputField label="Last Name" name="lastName"/>
              <div class="control-group">
-                    <petclinic:selectField name="specialties" label="Specialties" names="${specialties}" size="5"/>
+                    <petclinic:selectField name="specialties" label="Specialties" names="${specialties}" size="3"/>
             </div>
    			
             
@@ -33,4 +34,7 @@
             </div>
         </div>
     </form:form>
+     <c:if test="${!vet['new']}">
+       </c:if>
+    </jsp:body>
 </petclinic:layout>

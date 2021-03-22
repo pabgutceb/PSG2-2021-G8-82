@@ -19,6 +19,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,11 @@ public class VetService {
 	@Transactional(readOnly = true)
 	public Vet findVetById(final int id) throws DataAccessException {
 		return this.vetRepository.findById(id);
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<Specialty> findVetSpecialties() throws DataAccessException {
+		return this.vetRepository.findVetSpecialties();
 	}
 	
 	@Transactional

@@ -15,11 +15,13 @@
  */
 package org.springframework.samples.petclinic.web;
 
+import java.util.Collection;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Vets;
 import org.springframework.samples.petclinic.service.VetService;
@@ -29,6 +31,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -55,6 +58,11 @@ public class VetController {
 	@InitBinder
 	public void setAllowedFields(final WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
+	}
+	
+	@ModelAttribute("specialties")
+	public Collection<Specialty> populateVetSpecialties() {
+		return this.vetService.findVetSpecialties();
 	}
 	
 	@GetMapping(value = { "/vets" })
@@ -89,14 +97,14 @@ public class VetController {
 	}
 	
 	@GetMapping(value = "/vets/{vetId}/edit")
-	public String initUpdateOwnerForm(@PathVariable("vetId") final int vetId, final Model model) {
+	public String initUpdateVetForm(@PathVariable("vetId") final int vetId, final Model model) {
 		final Vet vet= this.vetService.findVetById(vetId);
 		model.addAttribute(vet);
 		return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/vets/{vetId}/edit")
-	public String processUpdateOwnerForm(@Valid final Vet vet, final BindingResult result,
+	public String processUpdateVetForm(@Valid final Vet vet, final BindingResult result,
 			@PathVariable("vetId") final int vetId) {
 		if (result.hasErrors()) {
 			return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
@@ -107,7 +115,6 @@ public class VetController {
 			return "redirect:/vets";
 		}
 	}
-
 
 	@GetMapping(value = { "/vets.xml"})
 	public @ResponseBody Vets showResourcesVetList() {

@@ -1,6 +1,7 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
@@ -15,7 +16,7 @@
         </script>
     </jsp:attribute>
     <jsp:body>
-        <h2><c:if test="${visit['new']}"><fmt:message key="newVisit"/></c:if>Visit</h2>
+        <h2><c:if test="${visit['new']}"><fmt:message key="newVisit"/></c:if></h2>
 
         <b><fmt:message key="pet"/></b>
         <table class="table table-striped">
@@ -37,8 +38,10 @@
 
         <form:form modelAttribute="visit" class="form-horizontal">
             <div class="form-group has-feedback">
-                <petclinic:inputField label="Date" name="date"/>
-                <petclinic:inputField label="Description" name="description"/>
+                <fmt:message var="date" key="date"/>
+            	<fmt:message var="description" key="description"/>
+                <petclinic:inputField label="${date}" name="date"/>
+                <petclinic:inputField label="${description}" name="description"/>
             </div>
 
             <div class="form-group">

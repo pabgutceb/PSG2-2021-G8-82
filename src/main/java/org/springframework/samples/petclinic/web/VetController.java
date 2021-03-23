@@ -61,7 +61,7 @@ public class VetController {
 	}
 	
 	@ModelAttribute("specialties")
-	public Collection<Specialty> populateVetSpecialties() {
+	public Collection<Specialty> populateSpecialties() {
 		return this.vetService.findVetSpecialties();
 	}
 	
@@ -84,16 +84,18 @@ public class VetController {
 	}
 
 	@PostMapping(value = "/vets/new")
-	public String processCreationForm(@Valid final Vet vet, final BindingResult result) {
-		if (result.hasErrors()) {
-			return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			//creating vet
-			this.vetService.saveVet(vet);
-			
-			return "redirect:/vets";
-		}
+	public String processCreationForm(@Valid final Vet vet, final String[] specialties, final BindingResult result) {
+		        if (result.hasErrors()) {
+		            return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
+		        } else {
+		            if(specialties != null) {
+		            	for (int i=0; i<specialties.length; i++) {
+							vet.addSpecialty(this.vetService.findSpecialtyByName(specialties[i]));
+						}
+		            } 
+		            this.vetService.saveVet(vet);
+		            return "redirect:/vets";
+		        }
 	}
 	
 	@GetMapping(value = "/vets/{vetId}/edit")
@@ -104,16 +106,19 @@ public class VetController {
 	}
 
 	@PostMapping(value = "/vets/{vetId}/edit")
-	public String processUpdateVetForm(@Valid final Vet vet, final BindingResult result,
-			@PathVariable("vetId") final int vetId) {
-		if (result.hasErrors()) {
-			return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			vet.setId(vetId);
-			this.vetService.saveVet(vet);
-			return "redirect:/vets";
-		}
+	public String processUpdateVetForm(@Valid final Vet vet, final String[] specialties, final BindingResult result, @PathVariable("vetId") final int vetId) {
+        if (result.hasErrors()) {
+            return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
+        } else {
+            vet.setId(vetId);
+            if(specialties != null) {
+            	for (int i=0; i<specialties.length; i++) {
+					vet.addSpecialty(this.vetService.findSpecialtyByName(specialties[i]));
+				}
+            }
+            this.vetService.saveVet(vet);
+            return "redirect:/vets";
+        }
 	}
 
 	@GetMapping(value = { "/vets.xml"})

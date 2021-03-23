@@ -44,7 +44,11 @@ public interface VetRepository extends Repository<Vet, Integer>{
 	 */
 	Collection<Vet> findAll() throws DataAccessException;
 	
-	@Query("SELECT vspecialty FROM Specialty vspecialty ORDER BY vspecialty.name")
+	/**
+	 * Retrieve all <code>Specialty</code>s from the data store.
+	 * @return a <code>Collection</code> of <code>Specialty</code>s
+	 */
+	@Query("SELECT vspec FROM Specialty vspec ORDER BY vspec.name")
 	List<Specialty> findVetSpecialties() throws DataAccessException;
 
 	/**
@@ -53,6 +57,5 @@ public interface VetRepository extends Repository<Vet, Integer>{
 	 * @see BaseEntity#isNew
 	 */
 	void save(Vet vet) throws DataAccessException;
-
 	Vet findById(int id);
 }

@@ -10,7 +10,6 @@
 
     <h2><fmt:message key="ownersInfo"/></h2>
 
-
     <table class="table table-striped">
         <tr>
             <th><fmt:message key="name"/></th>
@@ -43,6 +42,7 @@
     <br/>
     <br/>
     <br/>
+  
     <h2><fmt:message key="petsAndVisits"/></h2>
 
     <table class="table table-striped">
@@ -61,6 +61,7 @@
                 </td>
                 <td valign="top">
                     <table class="table-condensed">
+    					<caption style="text-align:center">Visits</caption>
                         <thead>
                         <tr>
                             <th><fmt:message key="visitDay"/></th>
@@ -90,6 +91,32 @@
                             </td>
                         </tr>
                     </table>
+                </td>
+                <td>
+ 					<table class="table-condensed">
+    					<caption style="text-align:center">Bookings</caption>
+                        <thead>
+                        <tr>
+                            <th>Start date</th>
+                            <th>Finish date</th>
+                        </tr>
+                        </thead>
+                        <c:forEach var="booking" items="${pet.bookings}">
+                            <tr>
+                                <td><petclinic:localDate date="${booking.startDate}" pattern="yyyy-MM-dd"/></td>
+                                <td><petclinic:localDate date="${booking.finishDate}" pattern="yyyy-MM-dd"/></td>
+                            </tr>
+                        </c:forEach>
+                        <tr>
+                            <td colspan="2" align="center">
+                                 <spring:url value="/owners/{ownerId}/pets/{petId}/booking/new" var="bookingUrl">
+                                    <spring:param name="ownerId" value="${owner.id}"/>
+                                    <spring:param name="petId" value="${pet.id}"/>
+                                </spring:url>
+                                <a href="${fn:escapeXml(bookingUrl)}">Book a room</a>
+                            </td>
+                        </tr>
+                    </table>                
                 </td>
             </tr>
 

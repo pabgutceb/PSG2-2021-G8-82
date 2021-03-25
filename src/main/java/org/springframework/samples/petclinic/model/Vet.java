@@ -16,10 +16,7 @@
 package org.springframework.samples.petclinic.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,32 +44,35 @@ public class Vet extends Person {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
-	private Set<Specialty> specialties;
+	private List<Specialty> specialties;
 
-	protected Set<Specialty> getSpecialtiesInternal() {
+	protected List<Specialty> getSpecialtiesInternal() {
 		if (this.specialties == null) {
-			this.specialties = new HashSet<>();
+			this.specialties = new ArrayList<>();
 		}
 		return this.specialties;
 	}
 
-	protected void setSpecialtiesInternal(Set<Specialty> specialties) {
+	protected void setSpecialtiesInternal(final List<Specialty> specialties) {
 		this.specialties = specialties;
 	}
-
+	
 	@XmlElement
 	public List<Specialty> getSpecialties() {
-		List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
+		final List<Specialty> sortedSpecs = new ArrayList<>(this.getSpecialtiesInternal());
 		PropertyComparator.sort(sortedSpecs, new MutableSortDefinition("name", true, true));
-		return Collections.unmodifiableList(sortedSpecs);
+		return sortedSpecs;
 	}
 
 	public int getNrOfSpecialties() {
-		return getSpecialtiesInternal().size();
+		return this.getSpecialtiesInternal().size();
 	}
 
-	public void addSpecialty(Specialty specialty) {
-		getSpecialtiesInternal().add(specialty);
+	public void addSpecialty(final Specialty specialty) {
+		this.getSpecialtiesInternal().add(specialty);
 	}
 
+	public void setSpecialties(final List<Specialty> specialties) {
+		this.specialties = specialties;
+	}
 }

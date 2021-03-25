@@ -20,7 +20,9 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
+import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OwnerService {
 
-	private OwnerRepository ownerRepository;	
+	private final OwnerRepository ownerRepository;	
+	private final PetRepository petRepository;
 	
 	@Autowired
 	private UserService userService;
@@ -42,28 +45,36 @@ public class OwnerService {
 	private AuthoritiesService authoritiesService;
 
 	@Autowired
-	public OwnerService(OwnerRepository ownerRepository) {
+	public OwnerService(final OwnerRepository ownerRepository, final PetRepository petRepository) {
 		this.ownerRepository = ownerRepository;
+		this.petRepository = petRepository;
 	}	
 
 	@Transactional(readOnly = true)
-	public Owner findOwnerById(int id) throws DataAccessException {
+	public Owner findOwnerById(final int id) throws DataAccessException {
 		return this.ownerRepository.findById(id);
 	}
 
 	@Transactional(readOnly = true)
-	public Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException {
+	public Collection<Owner> findOwnerByLastName(final String lastName) throws DataAccessException {
 		return this.ownerRepository.findByLastName(lastName);
 	}
 
 	@Transactional
-	public void saveOwner(Owner owner) throws DataAccessException {
+	public void saveOwner(final Owner owner) throws DataAccessException {
 		//creating owner
 		this.ownerRepository.save(owner);		
 		//creating user
 		this.userService.saveUser(owner.getUser());
 		//creating authorities
 		this.authoritiesService.saveAuthorities(owner.getUser().getUsername(), "owner");
-	}		
+	}
+	
+	public void delete(final Owner owner) {
+		for (final Pet p : owner.getPets()) {
+			this.petRepository.delete(p);
+		}
+		this.ownerRepository.delete(owner);
+	}
 
 }

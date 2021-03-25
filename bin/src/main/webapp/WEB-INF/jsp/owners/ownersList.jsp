@@ -16,7 +16,6 @@
             <th>City</th>
             <th style="width: 120px">Telephone</th>
             <th>Pets</th>
-            <th>Buttons</th>
         </tr>
         </thead>
         <tbody>
@@ -43,13 +42,6 @@
                     </c:forEach>
                 </td>
                 
-                <td>
-					<spring:url value="/owners/{ownerId}/delete" var="deleteOwnerUrl">
-                    <spring:param name="ownerId" value="${owner.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(deleteOwnerUrl)}">Delete Owner</a>
-
-				</td>
       
 <!--
                 <td> 

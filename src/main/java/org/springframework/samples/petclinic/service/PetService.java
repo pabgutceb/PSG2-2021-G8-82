@@ -38,14 +38,14 @@ import org.springframework.util.StringUtils;
 @Service
 public class PetService {
 
-	private PetRepository petRepository;
+	private final PetRepository petRepository;
 	
-	private VisitRepository visitRepository;
+	private final VisitRepository visitRepository;
 	
 
 	@Autowired
-	public PetService(PetRepository petRepository,
-			VisitRepository visitRepository) {
+	public PetService(final PetRepository petRepository,
+			final VisitRepository visitRepository) {
 		this.petRepository = petRepository;
 		this.visitRepository = visitRepository;
 	}
@@ -56,18 +56,18 @@ public class PetService {
 	}
 	
 	@Transactional
-	public void saveVisit(Visit visit) throws DataAccessException {
+	public void saveVisit(final Visit visit) throws DataAccessException {
 		this.visitRepository.save(visit);
 	}
 
 	@Transactional(readOnly = true)
-	public Pet findPetById(int id) throws DataAccessException {
+	public Pet findPetById(final int id) throws DataAccessException {
 		return this.petRepository.findById(id);
 	}
 
 	@Transactional(rollbackFor = DuplicatedPetNameException.class)
-	public void savePet(Pet pet) throws DataAccessException, DuplicatedPetNameException {
-			Pet otherPet=pet.getOwner().getPetwithIdDifferent(pet.getName(), pet.getId());
+	public void savePet(final Pet pet) throws DataAccessException, DuplicatedPetNameException {
+			final Pet otherPet=pet.getOwner().getPetwithIdDifferent(pet.getName(), pet.getId());
             if (StringUtils.hasLength(pet.getName()) &&  (otherPet!= null && otherPet.getId()!=pet.getId())) {            	
             	throw new DuplicatedPetNameException();
             }else
@@ -75,12 +75,12 @@ public class PetService {
 	}
 
 
-	public Collection<Visit> findVisitsByPetId(int petId) {
+	public Collection<Visit> findVisitsByPetId(final int petId) {
 		return this.visitRepository.findByPetId(petId);
 	}
 	
-	public void delete(Pet pet) {
-		for (Visit v : pet.getVisits()) {
+	public void delete(final Pet pet) {
+		for (final Visit v : pet.getVisits()) {
 			this.visitRepository.delete(v);
 		}
 		this.petRepository.delete(pet);

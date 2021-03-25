@@ -49,7 +49,7 @@ public interface VetRepository extends Repository<Vet, Integer>{
 	 * @return a <code>Collection</code> of <code>Specialty</code>s
 	 */
 	@Query("SELECT vspec FROM Specialty vspec ORDER BY vspec.name")
-	List<Specialty> findVetSpecialties() throws DataAccessException;
+	List<Specialty> findSpecialties() throws DataAccessException;
 
 	/**
 	 * Save an <code>Owner</code> to the data store, either inserting or updating it.

@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.service.VetService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SpecialtyFormatter implements Formatter<Specialty>{
 	
 	private final VetService vetService;
@@ -27,7 +29,7 @@ public class SpecialtyFormatter implements Formatter<Specialty>{
 
     @Override
     public Specialty parse(final String text, final Locale locale) throws ParseException {
-        final Collection<Specialty> findSpecialties = this.vetService.findVetSpecialties();
+        final Collection<Specialty> findSpecialties = this.vetService.findSpecialties();
         for (final Specialty speciality : findSpecialties) {
             if (speciality.getName().equals(text)) {
                 return speciality;

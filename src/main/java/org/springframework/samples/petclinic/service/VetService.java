@@ -16,9 +16,11 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.stereotype.Service;
@@ -35,11 +37,13 @@ public class VetService {
 
 	private final VetRepository vetRepository;
 
+	
 
 	@Autowired
 	public VetService(final VetRepository vetRepository) {
 		this.vetRepository = vetRepository;
-	}		
+		
+		}		
 
 	@Transactional(readOnly = true)	
 	public Collection<Vet> findVets() throws DataAccessException {
@@ -50,9 +54,21 @@ public class VetService {
 	public Vet findVetById(final int id) throws DataAccessException {
 		return this.vetRepository.findById(id);
 	}
-	
 
 	public void delete(final Vet vet) {
 		this.vetRepository.delete(vet);
 	}
+	@Transactional(readOnly = true)
+	public List<Specialty> findSpecialties() throws DataAccessException {
+		return this.vetRepository.findSpecialties();
+	}
+	
+	
+	@Transactional
+	public void saveVet(final Vet vet) throws DataAccessException {
+		//creating vet
+		this.vetRepository.save(vet);		
+		
+	}		
+
 }

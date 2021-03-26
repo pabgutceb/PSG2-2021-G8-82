@@ -32,9 +32,12 @@
                 
                  <td>
                  	<form modelAttribute="vet" action="/vets/${vet.id}/edit" method="get" class="form-horizontal">
-        				<button type="submit" class="btn btn-default">Edit</button>
-   					</form>
-                   
+        				    <button type="submit" class="btn btn-default">Edit</button>
+   					      </form>
+                  <form modelAttribute="vet" action="/vets/${vet.id}/delete"
+							      method="get" class="form-horizontal">
+							    <button type="submit" class="btn btn-default">Delete Vet</button>
+                   </form>
                 </td>
             </tr>
         </c:forEach>
@@ -52,10 +55,6 @@
     	
         <tr>
             <td>
-
-           
-             
-
                 <a href="<spring:url value="/vets.xml" htmlEscape="true" />"><fmt:message key="viewAs"/> XML</a>
             </td>      
 

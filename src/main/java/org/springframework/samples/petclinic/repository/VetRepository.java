@@ -19,8 +19,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
@@ -36,14 +37,22 @@ import org.springframework.samples.petclinic.model.Vet;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface VetRepository extends Repository<Vet, Integer>{
+public interface VetRepository extends CrudRepository<Vet, Integer>{
 
 	/**
 	 * Retrieve all <code>Vet</code>s from the data store.
 	 * @return a <code>Collection</code> of <code>Vet</code>s
 	 */
+	@Override
 	Collection<Vet> findAll() throws DataAccessException;
 	
+	Vet findById(int id) throws DataAccessException;
+	
+	@Override
+	@Modifying
+	@Query("DELETE FROM Vet vet WHERE vet = ?1")
+	void delete(Vet v);
+
 	/**
 	 * Retrieve all <code>Specialty</code>s from the data store.
 	 * @return a <code>Collection</code> of <code>Specialty</code>s
@@ -54,8 +63,7 @@ public interface VetRepository extends Repository<Vet, Integer>{
 	/**
 	 * Save an <code>Owner</code> to the data store, either inserting or updating it.
 	 * @param owner the <code>Owner</code> to save
+	 * @return 
 	 * @see BaseEntity#isNew
 	 */
-	void save(Vet vet) throws DataAccessException;
-	Vet findById(int id);
 }

@@ -10,15 +10,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BookingService {
 
-	private BookingRepository bookingRepository;
+	private final BookingRepository bookingRepository;
 
 	@Autowired
-	public BookingService(BookingRepository bookingRepository) {
+	public BookingService(final BookingRepository bookingRepository) {
 		this.bookingRepository = bookingRepository;
 	}
 
 	@Transactional
-	public void saveBooking(Booking booking) throws DataAccessException {
-		bookingRepository.save(booking);
+	public void saveBooking(final Booking booking) throws DataAccessException {
+		this.bookingRepository.save(booking);
+	}
+	
+	public void delete(final Booking booking) {
+		this.bookingRepository.delete(booking);
 	}
 }

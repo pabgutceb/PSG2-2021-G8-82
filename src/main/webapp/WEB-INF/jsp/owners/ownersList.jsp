@@ -42,6 +42,12 @@
                         <c:out value="${pet.name} "/>
                     </c:forEach>
                 </td>
+                <td>
+                  <form modelAttribute="owner" action="/owners/${owner.id}/delete"
+                    method="get" class="form-horizontal">
+                    <button type="submit" class="btn btn-default">Delete Owner</button>
+                  </form>
+                </td>
                 
       
 <!--
@@ -52,9 +58,9 @@
                    <c:out value="${owner.user.password}"/> 
                 </td> 
 -->
-                
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 </petclinic:layout>

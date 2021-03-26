@@ -1,5 +1,6 @@
 /*
  * Copyright 2002-2013 the original author or authors.
+
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +18,15 @@ package org.springframework.samples.petclinic.web;
 
 import java.util.Collection;
 import java.util.Map;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Vets;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -120,5 +121,16 @@ public class VetController {
 		vets.getVetList().addAll(this.vetService.findVets());
 		return vets;
 	}
-
+	
+	@GetMapping(path = "/vets/{vetId}/delete")
+	public String deleteVet(@PathVariable("vetId") final int vetId, final ModelMap model, final RedirectAttributes redirectAttributes) {
+		final Vet vet = this.vetService.findVetById(vetId);
+		if (vet.getId()!=null) {
+			this.vetService.delete(vet);
+			redirectAttributes.addFlashAttribute("message", "Vet successfully deleted!");
+		} else {
+			redirectAttributes.addFlashAttribute("message", "Vet not found!");
+		}
+		return "redirect:/vets";
+	}
 }

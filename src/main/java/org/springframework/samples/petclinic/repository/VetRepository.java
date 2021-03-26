@@ -22,7 +22,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
@@ -64,8 +63,7 @@ public interface VetRepository extends CrudRepository<Vet, Integer>{
 	/**
 	 * Save an <code>Owner</code> to the data store, either inserting or updating it.
 	 * @param owner the <code>Owner</code> to save
+	 * @return 
 	 * @see BaseEntity#isNew
 	 */
-	void save(Vet vet) throws DataAccessException;
-	Vet findById(int id);
 }

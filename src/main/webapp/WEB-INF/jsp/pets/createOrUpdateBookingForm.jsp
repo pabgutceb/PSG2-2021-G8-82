@@ -20,7 +20,7 @@
         </script>
     </jsp:attribute>
     <jsp:body>
-        <h2><c:if test="${booking['new']}">New </c:if>Booking</h2>
+        <h2><c:if test="${booking['new']}"><fmt:message key="newBooking"/></c:if></h2>
 
         <b>Pet</b>
         <table class="table table-striped">
@@ -51,7 +51,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="hidden" name="petId" value="${booking.pet.id}"/>
-                    <button class="btn btn-default" type="submit"><fmt:message key="bookRoom"/></button>
+                    <button class="btn btn-default" type="submit"><fmt:message key="bookingRoom"/></button>
                 </div>
             </div>
         </form:form>

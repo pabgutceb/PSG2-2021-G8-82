@@ -122,7 +122,7 @@
                                     <spring:param name="ownerId" value="${owner.id}"/>
                                     <spring:param name="petId" value="${pet.id}"/>
                                 </spring:url>
-                                <a href="${fn:escapeXml(bookingUrl)}"><fmt:message key="bookRoom"/></a>
+                                <a href="${fn:escapeXml(bookingUrl)}"><fmt:message key="bookingRoom"/></a>
                             </td>
                         </tr>
                     </table>                

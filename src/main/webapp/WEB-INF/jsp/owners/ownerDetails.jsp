@@ -64,8 +64,6 @@
     					<caption style="text-align:center">Visits</caption>
                         <thead>
                         <tr>
-                            <th>Visit Date</th>
-                            <th>Description</th>
                             <th><fmt:message key="visitDay"/></th>
                             <th><fmt:message key="description"/></th>
                         </tr>
@@ -97,7 +95,7 @@
                                     <spring:param name="ownerId" value="${owner.id}"/>
                                     <spring:param name="petId" value="${pet.id}"/>
                                 </spring:url>
-                                <a href="${fn:escapeXml(deletePetUrl)}">Delete Pet</a>
+                                <a href="${fn:escapeXml(deletePetUrl)}"><fmt:message key="deletePet"/></a>
 
 							</td>
 						</tr>
@@ -105,11 +103,11 @@
                 </td>
                 <td>
  					<table class="table-condensed">
-    					<caption style="text-align:center">Bookings</caption>
+    					<caption style="text-align:center"><fmt:message key="bookings"/></caption>
                         <thead>
                         <tr>
-                            <th>Start date</th>
-                            <th>Finish date</th>
+                           <th><fmt:message key="startDate"/></th>
+                           <th><fmt:message key="finishDate"/></th>
                         </tr>
                         </thead>
                         <c:forEach var="booking" items="${pet.bookings}">
@@ -124,7 +122,7 @@
                                     <spring:param name="ownerId" value="${owner.id}"/>
                                     <spring:param name="petId" value="${pet.id}"/>
                                 </spring:url>
-                                <a href="${fn:escapeXml(bookingUrl)}">Book a room</a>
+                                <a href="${fn:escapeXml(bookingUrl)}"><fmt:message key="bookRoom"/></a>
                             </td>
                         </tr>
                     </table>                

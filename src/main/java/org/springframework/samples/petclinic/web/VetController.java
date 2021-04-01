@@ -24,6 +24,7 @@ import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Vets;
 import org.springframework.samples.petclinic.service.VetService;
+import org.springframework.samples.petclinic.service.exceptions.DuplicatedVetNameException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -89,7 +90,12 @@ public class VetController {
 		        if (result.hasErrors()) {
 		            return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
 		        } else {
-		            this.vetService.saveVet(vet);
+                    try{
+                    	this.vetService.saveVet(vet);
+                    }catch(DuplicatedVetNameException ex){
+                        result.rejectValue("lastName", "duplicate", "already exists");
+                        return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
+                    }
 		            return "redirect:/vets";
 		        }
 	}
@@ -107,7 +113,12 @@ public class VetController {
             return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
         } else {
             vet.setId(vetId);
+            try{
             this.vetService.saveVet(vet);
+            }catch(DuplicatedVetNameException ex){
+                result.rejectValue("lastName", "duplicate", "already exists");
+                return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
+            }
             return "redirect:/vets";
         }
 	}

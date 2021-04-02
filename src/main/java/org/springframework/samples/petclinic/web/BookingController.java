@@ -10,6 +10,7 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class BookingController {
@@ -64,17 +66,18 @@ public class BookingController {
 		}
 	}
 	
-	/*@GetMapping(path = "/booking/{bookingId}/delete")
-	public String deleteBooking(@PathVariable("bookingId") final int bookingId, final ModelMap model, final RedirectAttributes redirectAttributes) {
-		final Booking b = this.bookingService.
+	@GetMapping(path = "/owners/{ownerId}/pets/{petId}/booking/{bookingId}/delete")
+	public String deleteVisit(@PathVariable("petId") int petId,@PathVariable("bookingId") int bookingId, ModelMap model, RedirectAttributes redirectAttributes) {
+		Booking booking= this.bookingService.findBookingbyId(bookingId);
+		Pet pet = this.petService.findPetById(petId);
 		if (pet.getId()!=null) {
-			this.petService.delete(pet);
-			redirectAttributes.addFlashAttribute("message", "Pet successfully deleted!");
+			this.bookingService.delete(booking);
+			redirectAttributes.addFlashAttribute("message", "Booking successfully deleted!");
 		} else {
-			redirectAttributes.addFlashAttribute("message", "Pet not found!");
+			redirectAttributes.addFlashAttribute("message", "Booking not found!");
 		}
 
 		return "redirect:/owners/{ownerId}";
-	}*/
+	}
 
 }

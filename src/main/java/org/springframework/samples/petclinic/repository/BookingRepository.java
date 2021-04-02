@@ -10,7 +10,7 @@ import org.springframework.samples.petclinic.model.Booking;
 public interface BookingRepository extends CrudRepository<Booking, Integer> {
 
 	
-	Booking findById(int id) throws DataAccessException;
+	Booking findBookingById(int id) throws DataAccessException;
 	
 	@Override
 	@Modifying

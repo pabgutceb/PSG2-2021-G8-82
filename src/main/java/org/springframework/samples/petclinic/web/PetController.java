@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
@@ -163,4 +164,20 @@ public class PetController {
 
 		return "redirect:/owners/{ownerId}";
 	}
+	
+	@GetMapping(path = "/pets/{petId}/visits/{visitId}/delete")
+	public String deleteVisit(@PathVariable("petId") int petId,@PathVariable("visitId") int visitId, ModelMap model, RedirectAttributes redirectAttributes) {
+		Visit visit = this.petService.findVisitById(visitId);
+		Pet pet = this.petService.findPetById(petId);
+		if (pet.getId()!=null) {
+			this.petService.delete(visit);
+			redirectAttributes.addFlashAttribute("message", "Visit successfully deleted!");
+		} else {
+			redirectAttributes.addFlashAttribute("message", "Visit not found!");
+		}
+
+		return "redirect:/owners/{ownerId}";
+	}
+	
+	
 }

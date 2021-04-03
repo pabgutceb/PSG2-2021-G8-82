@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -152,18 +153,25 @@ public class PetController {
 		}
 	}
 
-	@GetMapping(path = "/pets/{petId}/delete")
-	public String deletePet(@PathVariable("petId") int petId, ModelMap model, RedirectAttributes redirectAttributes) {
+	
+	@GetMapping(value = { "/pets/{petId}/delete"})
+    public String deletePet(@PathVariable int ownerId,@PathVariable int petId, @RequestParam(value = "confirm", required = false) Boolean confirm, RedirectAttributes redirectAttributes) {
 		Pet pet = this.petService.findPetById(petId);
-		if (pet.getId()!=null) {
-			this.petService.delete(pet);
-			redirectAttributes.addFlashAttribute("message", "Pet successfully deleted!");
-		} else {
-			redirectAttributes.addFlashAttribute("message", "Pet not found!");
-		}
-
-		return "redirect:/owners/{ownerId}";
-	}
+        if(confirm!=null && confirm) {
+        	redirectAttributes.addFlashAttribute("messageCode", "vet.deleteSuccess");
+            redirectAttributes.addFlashAttribute("messageArgument", pet.getName());
+            redirectAttributes.addFlashAttribute("messageType", "success");
+            this.petService.delete(pet);
+        }else {
+            redirectAttributes.addFlashAttribute("messageCode", "vet.deleteConfirm");
+            redirectAttributes.addFlashAttribute("messageArgument", pet.getName());
+            redirectAttributes.addFlashAttribute("messageType", "danger");
+            redirectAttributes.addFlashAttribute("buttonMessage", "delete");
+            redirectAttributes.addFlashAttribute("buttonURL", String.format("/owners/%d/pets/%d/delete?confirm=true",ownerId, petId));
+            
+        }
+        return "redirect:/owners/{ownerId}";
+    }
 	
 	@GetMapping(path = "/pets/{petId}/visits/{visitId}/delete")
 	public String deleteVisit(@PathVariable("petId") int petId,@PathVariable("visitId") int visitId, ModelMap model, RedirectAttributes redirectAttributes) {

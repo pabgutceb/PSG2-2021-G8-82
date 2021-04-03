@@ -27,13 +27,13 @@ import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -145,17 +145,24 @@ public class OwnerController {
 		return mav;
 	}
 	
-	@GetMapping(path = "/owners/{ownerId}/delete")
-	public String deleteOwner(@PathVariable("ownerId") final int ownerId, final ModelMap model, final RedirectAttributes redirectAttributes) {
-		final Owner owner = this.ownerService.findOwnerById(ownerId);
-		if (owner.getId()!=null) {
-			this.ownerService.delete(owner);
-			redirectAttributes.addFlashAttribute("message", "Owner successfully deleted!");
-		} else {
-			redirectAttributes.addFlashAttribute("message", "Owner not found!");
-		}
-
-		return "redirect:/owners";
-	}
+	
+	@GetMapping(value = { "/owners/{ownerId}/delete"})
+    public String deleteOwner(@PathVariable int ownerId, @RequestParam(value = "confirm", required = false) Boolean confirm, RedirectAttributes redirectAttributes) {
+		Owner owner = this.ownerService.findOwnerById(ownerId);
+        if(confirm!=null && confirm) {
+        	redirectAttributes.addFlashAttribute("messageCode", "owner.deleteSuccess");
+            redirectAttributes.addFlashAttribute("messageArgument", owner.getFirstName());
+            redirectAttributes.addFlashAttribute("messageType", "success");
+            this.ownerService.delete(owner);
+        }else {
+            redirectAttributes.addFlashAttribute("messageCode", "owner.deleteConfirm");
+            redirectAttributes.addFlashAttribute("messageArgument", owner.getFirstName());
+            redirectAttributes.addFlashAttribute("messageType", "danger");
+            redirectAttributes.addFlashAttribute("buttonMessage", "delete");
+            redirectAttributes.addFlashAttribute("buttonURL", String.format("/owners/%d/delete?confirm=true",ownerId));
+            
+        }
+        return "redirect:/owners";
+    }
 
 }

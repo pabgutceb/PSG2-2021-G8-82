@@ -18,11 +18,15 @@
         	<fmt:message var="address" key="address"/>
         	<fmt:message var="city" key="city"/>
         	<fmt:message var="telephone" key="telephone"/>
+        	<fmt:message var="username" key="username"/>
+        	<fmt:message var="password" key="password"/>
             <petclinic:inputField label="${firstName}" name="firstName"/>
             <petclinic:inputField label="${lastName}" name="lastName"/>
             <petclinic:inputField label="${address}" name="address"/>
             <petclinic:inputField label="${city}" name="city"/>
             <petclinic:inputField label="${telephone}" name="telephone"/>
+            <petclinic:inputField label="${username}" name="user.username"/>
+            <petclinic:inputField label="${password}" name="user.password"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

@@ -22,7 +22,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 
@@ -59,6 +58,9 @@ public interface VetRepository extends CrudRepository<Vet, Integer>{
 	 */
 	@Query("SELECT vspec FROM Specialty vspec ORDER BY vspec.name")
 	List<Specialty> findSpecialties() throws DataAccessException;
+
+	@Query("SELECT vet FROM Vet vet WHERE vet.firstName = ?1 AND vet.lastName = ?2")
+	Vet getVetByName(String firstName, String lastName);
 
 	/**
 	 * Save an <code>Owner</code> to the data store, either inserting or updating it.

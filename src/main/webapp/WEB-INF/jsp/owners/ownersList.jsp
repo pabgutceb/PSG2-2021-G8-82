@@ -45,7 +45,7 @@
                 <td>
                   <form modelAttribute="owner" action="/owners/${owner.id}/delete"
                     method="get" class="form-horizontal">
-                    <button type="submit" class="btn btn-default">Delete Owner</button>
+                    <button type="submit" class="btn btn-default"><fmt:message key="deleteOwner"/></button>
                   </form>
                 </td>
                 

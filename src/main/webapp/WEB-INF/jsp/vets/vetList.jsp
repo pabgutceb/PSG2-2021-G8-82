@@ -32,11 +32,11 @@
                 
                  <td>
                  	<form modelAttribute="vet" action="/vets/${vet.id}/edit" method="get" class="form-horizontal">
-        				    <button type="submit" class="btn btn-default">Edit</button>
+        				    <button type="submit" class="btn btn-default"><fmt:message key="editVet"/></button>
    					      </form>
                   <form modelAttribute="vet" action="/vets/${vet.id}/delete"
 							      method="get" class="form-horizontal">
-							    <button type="submit" class="btn btn-default">Delete Vet</button>
+							    <button type="submit" class="btn btn-default"><fmt:message key="deleteVet"/></button>
                    </form>
                 </td>
             </tr>
@@ -48,7 +48,7 @@
     	<tr>
         	<td>
                <form modelAttribute="vet" action="/vets/new" method="get" class="form-horizontal">
-        			<button type="submit" class="btn btn-default">Create a new Veterinarian</button>
+        			<button type="submit" class="btn btn-default"><fmt:message key="createVet"/></button>
    				</form>
             </td>      
         </tr>

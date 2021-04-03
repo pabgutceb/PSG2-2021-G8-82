@@ -150,9 +150,9 @@ public class OwnerController {
 		final Owner owner = this.ownerService.findOwnerById(ownerId);
 		if (owner.getId()!=null) {
 			this.ownerService.delete(owner);
-			redirectAttributes.addFlashAttribute("message", "Owner successfully deleted!");
+			redirectAttributes.addFlashAttribute("message", "¡Propietario borrado con éxito!");
 		} else {
-			redirectAttributes.addFlashAttribute("message", "Owner not found!");
+			redirectAttributes.addFlashAttribute("message", "¡Propietario no encontrado!");
 		}
 
 		return "redirect:/owners";

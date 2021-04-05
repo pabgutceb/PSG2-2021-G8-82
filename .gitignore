@@ -14,4 +14,7 @@ target/*
 !.vscode/launch.json
 !.vscode/extensions.json
 _site/
+#Ignoring binaries
+bin
+target
 

@@ -14,13 +14,14 @@
 
 	<div class="container-fluid">
 		<div class="container xd-container">
-
 			<petclinic:alertOrConfirm message="${message}"
+				messageCode="${messageCode}" messageArgument="${messageArgument}"
 				messageType="${messageType}" buttonMessage="${buttonMessage}"
 				buttonURL="${buttonURL}" />
-		
+
 
 			<jsp:doBody />
+
 
 			<petclinic:pivotal />
 		</div>

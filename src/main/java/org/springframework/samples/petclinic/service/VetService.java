@@ -23,8 +23,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
+import org.springframework.samples.petclinic.service.exceptions.DuplicatedVetNameException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * Mostly used as a facade for all Petclinic controllers Also a placeholder
@@ -63,12 +65,14 @@ public class VetService {
 		return this.vetRepository.findSpecialties();
 	}
 	
-	
-	@Transactional
-	public void saveVet(final Vet vet) throws DataAccessException {
-		//creating vet
-		this.vetRepository.save(vet);		
-		
-	}		
+
+	@Transactional(rollbackFor = DuplicatedVetNameException.class)
+	public void saveVet(final Vet vet) throws DataAccessException, DuplicatedVetNameException {
+		final Vet otherVet= this.vetRepository.getVetByName(vet.getFirstName(),vet.getLastName());
+        if (StringUtils.hasLength(vet.getFirstName()) && StringUtils.hasLength(vet.getLastName()) && (otherVet!= null && otherVet.getId()!=vet.getId())) {            	
+        	throw new DuplicatedVetNameException();
+        }else
+    		this.vetRepository.save(vet);              
+		}			
 
 }

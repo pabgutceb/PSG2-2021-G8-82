@@ -145,6 +145,7 @@ public class OwnerController {
 		return mav;
 	}
 	
+
 	
 	@GetMapping(value = { "/owners/{ownerId}/delete"})
     public String deleteOwner(@PathVariable int ownerId, @RequestParam(value = "confirm", required = false) Boolean confirm, RedirectAttributes redirectAttributes) {
@@ -164,5 +165,4 @@ public class OwnerController {
         }
         return "redirect:/owners";
     }
-
 }

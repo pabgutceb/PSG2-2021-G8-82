@@ -56,7 +56,7 @@ public class PetController {
         private final OwnerService ownerService;
 
 	@Autowired
-	public PetController(PetService petService, OwnerService ownerService) {
+	public PetController(final PetService petService, final OwnerService ownerService) {
 		this.petService = petService;
                 this.ownerService = ownerService;
 	}
@@ -67,7 +67,7 @@ public class PetController {
 	}
 
 	@ModelAttribute("owner")
-	public Owner findOwner(@PathVariable("ownerId") int ownerId) {
+	public Owner findOwner(@PathVariable("ownerId") final int ownerId) {
 		return this.ownerService.findOwnerById(ownerId);
 	}
         
@@ -82,25 +82,25 @@ public class PetController {
 	}*/
                 
 	@InitBinder("owner")
-	public void initOwnerBinder(WebDataBinder dataBinder) {
+	public void initOwnerBinder(final WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
 
 	@InitBinder("pet")
-	public void initPetBinder(WebDataBinder dataBinder) {
+	public void initPetBinder(final WebDataBinder dataBinder) {
 		dataBinder.setValidator(new PetValidator());
 	}
 
 	@GetMapping(value = "/pets/new")
-	public String initCreationForm(Owner owner, ModelMap model) {
-		Pet pet = new Pet();
+	public String initCreationForm(final Owner owner, final ModelMap model) {
+		final Pet pet = new Pet();
 		owner.addPet(pet);
 		model.put("pet", pet);
 		return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/pets/new")
-	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {		
+	public String processCreationForm(final Owner owner, @Valid final Pet pet, final BindingResult result, final ModelMap model) {		
 		if (result.hasErrors()) {
 			model.put("pet", pet);
 			return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
@@ -109,7 +109,7 @@ public class PetController {
                     try{
                     	owner.addPet(pet);
                     	this.petService.savePet(pet);
-                    }catch(DuplicatedPetNameException ex){
+                    }catch(final DuplicatedPetNameException ex){
                         result.rejectValue("name", "duplicate", "already exists");
                         return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
                     }
@@ -118,8 +118,8 @@ public class PetController {
 	}
 
 	@GetMapping(value = "/pets/{petId}/edit")
-	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
-		Pet pet = this.petService.findPetById(petId);
+	public String initUpdateForm(@PathVariable("petId") final int petId, final ModelMap model) {
+		final Pet pet = this.petService.findPetById(petId);
 		model.put("pet", pet);
 		return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
@@ -135,23 +135,24 @@ public class PetController {
      * @return
      */
         @PostMapping(value = "/pets/{petId}/edit")
-	public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner,@PathVariable("petId") int petId, ModelMap model) {
+	public String processUpdateForm(@Valid final Pet pet, final BindingResult result, final Owner owner,@PathVariable("petId") final int petId, final ModelMap model) {
 		if (result.hasErrors()) {
 			model.put("pet", pet);
 			return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-                        Pet petToUpdate=this.petService.findPetById(petId);
+                        final Pet petToUpdate=this.petService.findPetById(petId);
 			BeanUtils.copyProperties(pet, petToUpdate, "id","owner","visits");                                                                                  
                     try {                    
                         this.petService.savePet(petToUpdate);                    
-                    } catch (DuplicatedPetNameException ex) {
+                    } catch (final DuplicatedPetNameException ex) {
                         result.rejectValue("name", "duplicate", "already exists");
                         return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
                     }
 			return "redirect:/owners/{ownerId}";
 		}
 	}
+
 
 	
 	@GetMapping(value = { "/pets/{petId}/delete"})
@@ -179,13 +180,12 @@ public class PetController {
 		Pet pet = this.petService.findPetById(petId);
 		if (pet.getId()!=null) {
 			this.petService.delete(visit);
-			redirectAttributes.addFlashAttribute("message", "Visit successfully deleted!");
+			redirectAttributes.addFlashAttribute("message", "Visita borrada correctamente");
 		} else {
-			redirectAttributes.addFlashAttribute("message", "Visit not found!");
+			redirectAttributes.addFlashAttribute("message", "Visita no encontrada");
 		}
 
 		return "redirect:/owners/{ownerId}";
 	}
-	
 	
 }

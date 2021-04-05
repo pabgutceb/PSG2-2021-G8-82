@@ -24,8 +24,8 @@
             		<c:out value="${vet.firstName} ${vet.lastName}"/>
             	</td>
                 <td>
-                    <c:forEach var="specialty" items="${vet.specialties}">
-                        <c:out value="${specialty.name} "/>
+                    <c:forEach var="specialty" items="${vet.specialties}" varStatus="specialtyLoopState">
+                        <c:out value="${specialty.name}"/><c:if test="${not specialtyLoopState.last}">, </c:if>
                     </c:forEach>
                     <c:if test="${vet.nrOfSpecialties == 0}">none</c:if>
                 </td>

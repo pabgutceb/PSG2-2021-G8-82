@@ -17,6 +17,7 @@
             <th><fmt:message key="city"/></th>
             <th style="width: 120px"><fmt:message key="telephone"/></th>
             <th><fmt:message key="pets"/></th>
+            <th><fmt:message key="buttons"/></th>
         </tr>
         </thead>
         <tbody>

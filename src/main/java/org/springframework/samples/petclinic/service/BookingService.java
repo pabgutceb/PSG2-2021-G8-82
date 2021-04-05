@@ -17,6 +17,12 @@ public class BookingService {
 	public BookingService(final BookingRepository bookingRepository) {
 		this.bookingRepository = bookingRepository;
 	}
+	
+
+	@Transactional(readOnly = true)
+	public Booking findBookingbyId(Integer id) throws DataAccessException {
+		return this.bookingRepository.findBookingById(id);
+	}
 
 	@Transactional(rollbackFor = DateOverlapException.class)
 	public void saveBooking(final Booking booking) throws DataAccessException, DateOverlapException {

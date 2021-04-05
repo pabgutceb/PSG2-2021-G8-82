@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -151,16 +153,39 @@ public class PetController {
 		}
 	}
 
-	@GetMapping(path = "/pets/{petId}/delete")
-	public String deletePet(@PathVariable("petId") final int petId, final ModelMap model, final RedirectAttributes redirectAttributes) {
-		final Pet pet = this.petService.findPetById(petId);
+
+	
+	@GetMapping(value = { "/pets/{petId}/delete"})
+    public String deletePet(@PathVariable int ownerId,@PathVariable int petId, @RequestParam(value = "confirm", required = false) Boolean confirm, RedirectAttributes redirectAttributes) {
+		Pet pet = this.petService.findPetById(petId);
+        if(confirm!=null && confirm) {
+        	redirectAttributes.addFlashAttribute("messageCode", "vet.deleteSuccess");
+            redirectAttributes.addFlashAttribute("messageArgument", pet.getName());
+            redirectAttributes.addFlashAttribute("messageType", "success");
+            this.petService.delete(pet);
+        }else {
+            redirectAttributes.addFlashAttribute("messageCode", "vet.deleteConfirm");
+            redirectAttributes.addFlashAttribute("messageArgument", pet.getName());
+            redirectAttributes.addFlashAttribute("messageType", "danger");
+            redirectAttributes.addFlashAttribute("buttonMessage", "delete");
+            redirectAttributes.addFlashAttribute("buttonURL", String.format("/owners/%d/pets/%d/delete?confirm=true",ownerId, petId));
+            
+        }
+        return "redirect:/owners/{ownerId}";
+    }
+	
+	@GetMapping(path = "/pets/{petId}/visits/{visitId}/delete")
+	public String deleteVisit(@PathVariable("petId") int petId,@PathVariable("visitId") int visitId, ModelMap model, RedirectAttributes redirectAttributes) {
+		Visit visit = this.petService.findVisitById(visitId);
+		Pet pet = this.petService.findPetById(petId);
 		if (pet.getId()!=null) {
-			this.petService.delete(pet);
-			redirectAttributes.addFlashAttribute("message", "¡Mascota borrada con éxito!");
+			this.petService.delete(visit);
+			redirectAttributes.addFlashAttribute("message", "Visita borrada correctamente");
 		} else {
-			redirectAttributes.addFlashAttribute("message", "¡Mascota no encontrada!");
+			redirectAttributes.addFlashAttribute("message", "Visita no encontrada");
 		}
 
 		return "redirect:/owners/{ownerId}";
 	}
+	
 }

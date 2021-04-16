@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +12,11 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "causes")
 public class Cause extends BaseEntity {
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
+	private Owner owner;
 	
 	@NotBlank
 	@Column(name = "name")
@@ -81,6 +88,18 @@ public class Cause extends BaseEntity {
 	public void setIsClosed(final Boolean isClosed) {
 		this.isClosed = isClosed;
 	}
+
+
+	
+	public Owner getOwner() {
+		return this.owner;
+	}
+
+	public void setOwner(final Owner owner) {
+		this.owner = owner;
+	}
+	
+	
 
 	
 

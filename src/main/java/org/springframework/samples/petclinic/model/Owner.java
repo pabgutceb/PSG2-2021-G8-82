@@ -47,8 +47,8 @@ import org.springframework.core.style.ToStringCreator;
 @Table(name = "owners")
 public class Owner extends Person {
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-	private Set<Cause> causes;
+	/*@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	private Set<Cause> causes;*/
 
 	@Column(name = "address")
 	@NotEmpty
@@ -170,14 +170,14 @@ public class Owner extends Person {
 		return null;
 	}
 	
-	public Set<Cause> getCauses() {
+	/*public Set<Cause> getCauses() {
 		return this.causes;
 	}
 
 	
 	public void setCauses(final Set<Cause> causes) {
 		this.causes = causes;
-	}
+	}*/
 
 	@Override
 	public String toString() {

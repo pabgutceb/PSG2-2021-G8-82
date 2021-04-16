@@ -6,7 +6,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Cause;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.CauseService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@Controller
 public class CauseController {
 	
 	private static final String VIEWS_CAUSES_CREATE_OR_UPDATE_FORM = "causes/createOrUpdateCauseForm";
@@ -32,8 +35,13 @@ public class CauseController {
 		dataBinder.setDisallowedFields("id");
 	}
 	
+	@InitBinder("owner")
+	public void initOwnerBinder(final WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
+	
 	@GetMapping(value = "/causes/new")
-	public String initCreationForm(final Map<String,Object> model) {
+	public String initCreationForm(final Owner owner, final Map<String,Object> model) {
 		final Cause cause = new Cause();
 		cause.setIsClosed(false);
 		model.put("cause", cause);
@@ -41,10 +49,11 @@ public class CauseController {
 	}
 	
 	@PostMapping(value = "/causes/new")
-	public String processCreationForm(@Valid final Cause cause, final BindingResult result) {
+	public String processCreationForm(final Owner owner, @Valid final Cause cause, final BindingResult result) {
 		if(result.hasErrors()) {
 			return CauseController.VIEWS_CAUSES_CREATE_OR_UPDATE_FORM;
 		} else {
+			//cause.setOwner(owner);
 			this.causeService.saveCause(cause);
 			return "redirect:/causes";
 		}

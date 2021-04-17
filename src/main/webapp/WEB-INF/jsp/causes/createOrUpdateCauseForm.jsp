@@ -20,7 +20,7 @@
             <petclinic:inputField label="${name}" name="name"/>
             <petclinic:inputField label="${description}" name="description"/>
             <petclinic:inputField label="${budgetTarget}" name="budgetTarget"/>
-            <petclinic:inputField label="${organization}" name="organization"/>            
+            <petclinic:inputField label="${organization}" name="organization"/>           
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

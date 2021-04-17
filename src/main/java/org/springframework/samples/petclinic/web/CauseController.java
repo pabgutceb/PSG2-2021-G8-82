@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Cause;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.CauseService;
+import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -24,10 +25,12 @@ public class CauseController {
 	
 	private static final String VIEWS_CAUSES_CREATE_OR_UPDATE_FORM = "causes/createOrUpdateCauseForm";
 	private final CauseService causeService;
+	private final OwnerService ownerService;
 	
 	@Autowired
-	public CauseController(final CauseService causeService) {
+	public CauseController(final CauseService causeService, final OwnerService ownerService) {
 		this.causeService = causeService;
+		this.ownerService = ownerService;
 	}
 	
 	@InitBinder
@@ -49,11 +52,12 @@ public class CauseController {
 	}
 	
 	@PostMapping(value = "/causes/new")
-	public String processCreationForm(final Owner owner, @Valid final Cause cause, final BindingResult result) {
+	public String processCreationForm(@Valid final Cause cause, final BindingResult result) {
 		if(result.hasErrors()) {
 			return CauseController.VIEWS_CAUSES_CREATE_OR_UPDATE_FORM;
 		} else {
-			//cause.setOwner(owner);
+			final Owner principal = this.ownerService.getPrincipal();
+			cause.setOwner(principal);
 			this.causeService.saveCause(cause);
 			return "redirect:/causes";
 		}

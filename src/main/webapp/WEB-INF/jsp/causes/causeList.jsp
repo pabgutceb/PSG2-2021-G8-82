@@ -34,7 +34,7 @@
                    <c:out value="${cause.totalBudget}"/>
                 </td>
                 <td>
-               		<form modelAttribute="cause" action="/causes/${cause.id}/donation/new" method="get" class="form-horizontal">
+               		<form modelAttribute="cause" action="/causes/${cause.id}/donations/new" method="get" class="form-horizontal">
         				<button type="submit" class="btn btn-default"><fmt:message key="createDonation"/></button>
    					</form>
             	</td>   

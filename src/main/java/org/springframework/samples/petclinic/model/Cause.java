@@ -1,13 +1,24 @@
 package org.springframework.samples.petclinic.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 
 @Entity
 @Table(name = "causes")
@@ -15,6 +26,8 @@ public class Cause extends BaseEntity {
 	
 	
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cause")
+	private Set<Donation> donations;
 	
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
@@ -118,6 +131,30 @@ public class Cause extends BaseEntity {
 		this.totalBudget = totalBudget;
 	}
 	
+	protected Set<Donation> getDonationsInternal() {
+		if (this.donations == null) {
+			this.donations = new HashSet<>();
+		}
+		return this.donations;
+	}
+
+	 public List<Donation> getDonations() {
+	        List<Donation> sortedDonations = new ArrayList<>(this.getDonationsInternal());
+	        PropertyComparator.sort(sortedDonations, new MutableSortDefinition("date", false, false));
+	        return Collections.unmodifiableList(sortedDonations);
+	    }
+	
+	public void addDonation(final Donation donation) {
+		this.getDonationsInternal().add(donation);
+		donation.setCause(this);
+	}
+	
+	public boolean removeDonation(final Donation donation) {
+		return this.getDonationsInternal().remove(donation);
+	}
+
+	
+	}
 	
 	
 	
@@ -125,4 +162,4 @@ public class Cause extends BaseEntity {
 
 	
 
-}
+

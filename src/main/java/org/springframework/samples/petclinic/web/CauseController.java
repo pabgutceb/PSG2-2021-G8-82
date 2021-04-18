@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -7,8 +8,10 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Cause;
 import org.springframework.samples.petclinic.model.Causes;
+import org.springframework.samples.petclinic.model.Donation;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.CauseService;
+import org.springframework.samples.petclinic.service.DonationService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,13 +29,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CauseController {
 	
 	private static final String VIEWS_CAUSES_CREATE_OR_UPDATE_FORM = "causes/createOrUpdateCauseForm";
+	private static final String VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM = "causes/createOrUpdateDonationForm";
 	private final CauseService causeService;
 	private final OwnerService ownerService;
+	private final DonationService donationService;
 	
 	@Autowired
-	public CauseController(final CauseService causeService, final OwnerService ownerService) {
+	public CauseController(final CauseService causeService, final OwnerService ownerService,final DonationService donationService) {
 		this.causeService = causeService;
 		this.ownerService = ownerService;
+		this.donationService=donationService;
 	}
 	
 	@InitBinder
@@ -103,6 +110,30 @@ public class CauseController {
 		return "causes/causeList";
 	}
 	
+	@GetMapping(value = "/causes/{causeId}/donations/new")
+    public String initCreationForm(Cause cause, ModelMap model) {
+        Donation donation = new Donation();
+        cause.addDonation(donation);
+        donation.setDonationDate(LocalDate.now());
+        model.put("donation", donation);
+        return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
+    }
+
+    @PostMapping(value = "/causes/{causeId}/donations/new")
+    public String processCreationForm(@ModelAttribute Cause cause, @Valid Donation donation, BindingResult result, ModelMap model) {
+        donation.setCause(cause);
+        if (result.hasErrors()) {
+            model.put("donation", donation);
+            return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
+        } else {
+            this.donationService.saveDonation(donation);
+            cause.addDonation(donation);
+           
+            this.causeService.saveCause(cause);
+            }
+
+        return "redirect:/causes";
+        }
 	
 
 }

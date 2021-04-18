@@ -12,8 +12,6 @@
             <spring:url value="/resources/images/pets2.jpg" htmlEscape="true" var="petsImage"/>
             <img class="img-responsive" src="${petsImage}"/>
         </div>
-        <div>
-        	<a class="btn btn-default" href='<spring:url value="/causes/new" htmlEscape="true"/>'><fmt:message key="addCause"/></a>
-        </div>
+     
     </div>
 </petclinic:layout>

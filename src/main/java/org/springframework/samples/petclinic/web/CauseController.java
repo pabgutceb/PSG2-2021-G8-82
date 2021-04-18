@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Cause;
+import org.springframework.samples.petclinic.model.Causes;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.CauseService;
 import org.springframework.samples.petclinic.service.OwnerService;
@@ -91,6 +92,15 @@ public class CauseController {
 			redirectAttributes.addFlashAttribute("message", "¡Veterinario no encontrado!");
 		}
 		return "redirect:/vets";
+	}
+	
+	@GetMapping(value = { "/causes" })
+	public String showCauseList(final Map<String, Object> model) {
+		
+		final Causes causes = new Causes();
+		causes.getCauseList().addAll(this.causeService.findCauses());
+		model.put("causes", causes);
+		return "causes/causeList";
 	}
 	
 	

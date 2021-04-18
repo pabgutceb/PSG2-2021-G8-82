@@ -76,5 +76,10 @@ public class OwnerService {
 		}
 		this.ownerRepository.delete(owner);
 	}
+	
+	public Owner getPrincipal() {
+		final String username = this.userService.getPrincipal();
+		return this.ownerRepository.findByUserUsername(username);
+	}
 
 }

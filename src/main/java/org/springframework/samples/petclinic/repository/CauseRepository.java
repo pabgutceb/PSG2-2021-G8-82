@@ -13,6 +13,8 @@ public interface CauseRepository extends CrudRepository<Cause,Integer> {
 	@Override
 	Collection<Cause> findAll() throws DataAccessException;
 	
+	
+	
 
 	
 	

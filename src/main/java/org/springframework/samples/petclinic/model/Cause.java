@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 public class Cause extends BaseEntity {
 	
 	
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
@@ -30,6 +32,11 @@ public class Cause extends BaseEntity {
 	@Column(name = "budget_target")
 	@Min(0)
 	private Double budgetTarget;
+	
+	@NotNull
+	@Column(name = "total_budget")
+	@Min(0)
+	private Double totalBudget;
 	
 	@NotBlank
 	@Column(name = "organization")
@@ -98,6 +105,20 @@ public class Cause extends BaseEntity {
 	public void setOwner(final Owner owner) {
 		this.owner = owner;
 	}
+
+
+	
+	public Double getTotalBudget() {
+		return this.totalBudget;
+	}
+
+
+	
+	public void setTotalBudget(final Double totalBudget) {
+		this.totalBudget = totalBudget;
+	}
+	
+	
 	
 	
 	

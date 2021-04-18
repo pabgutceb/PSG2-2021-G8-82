@@ -22,6 +22,7 @@ public class CauseService {
 	
 	@Transactional
 	public void saveCause(final Cause cause) throws DataAccessException {
+		
 		this.causeRepository.save(cause);
 	}
 	
@@ -30,7 +31,7 @@ public class CauseService {
 		return this.causeRepository.findCauseById(causeId);
 	}
 	
-	
+	@Transactional
 	public Collection<Cause> findCauses() throws DataAccessException {
 		return this.causeRepository.findAll();
 		

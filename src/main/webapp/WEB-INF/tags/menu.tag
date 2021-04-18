@@ -41,7 +41,7 @@
 					<span><fmt:message key="veterinarians"/></span>
 				</petclinic:menuItem>
 				
-				<petclinic:menuItem active="${name eq 'causes'}" url="/causes.html" title="causes">
+				<petclinic:menuItem active="${name eq 'causes'}" url="/causes" title="causes">
                     <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                     <span><fmt:message key="causes"/></span>
                 </petclinic:menuItem>

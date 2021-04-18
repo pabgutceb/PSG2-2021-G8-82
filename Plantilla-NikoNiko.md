@@ -34,7 +34,7 @@ In the retrospective meeting, the team has a discussion about those results.
 
 | Day           | Manolo    | Estefanía  | Benji     | Carlos     | Pablo     | [Member F]     |
 | ------------- | ------------- | -------------  | -------------  | -------------  | -------------  | -------------  |
-| Day 1         | 😐        |                |                |                |                |                |
+| Day 1         | 😐        |                |                |                |      😃          |                |
 | Day 2         |               |                |                |                |                |                |
 | Day 3         |               |                |                |                |                |                |
 | Day 4         |               |               |                |                |                |                |

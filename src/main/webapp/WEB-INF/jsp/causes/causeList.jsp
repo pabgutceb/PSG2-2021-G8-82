@@ -27,11 +27,16 @@
 					<td><c:out value="${cause.budgetTarget}" /></td>
 
 					<td><c:out value="${cause.totalBudget}" /></td>
-					<td><spring:url value="/causes/{causeId}/donations/new"
+					<td>
+					<c:if test = "${!cause.isClosed}">
+        
+      
+					<spring:url value="/causes/{causeId}/donations/new"
 							var="addUrl">
 							<spring:param name="causeId" value="${cause.id}" />
 						</spring:url> <a href="${fn:escapeXml(addUrl)}" class="btn btn-default"><fmt:message
 								key="createDonation" /></a></td>
+					</c:if>
 				</tr>
 
 

@@ -49,7 +49,6 @@ public class CauseController {
 	public void initOwnerBinder(final WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
-	
 	@GetMapping(value = "/causes/new")
 	public String initCreationForm(final Owner owner, final Map<String,Object> model) {
 		final Cause cause = new Cause();
@@ -120,16 +119,29 @@ public class CauseController {
 
     @PostMapping(value = "/causes/{causeId}/donations/new")
     public String processCreationForm(@PathVariable("causeId") final int causeId, @Valid Donation donation, BindingResult result, ModelMap model) {
-       Cause cause= causeService.findCauseById(causeId);
+       Cause cause= this.causeService.findCauseById(causeId);
+       if (cause.getIsClosed()){
+           result.rejectValue("client", "closed");
+           result.rejectValue("amount", "closed");
+       } 
         if (result.hasErrors()) {
             model.put("donation", donation);
             return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
         } else {
+        	Double updateBudget= donation.getAmount()+cause.getTotalBudget();
+        	if((cause.getBudgetTarget()- updateBudget)==0) {
+            	cause.setIsClosed(true);
+            }else if((cause.getBudgetTarget()- updateBudget)<0){
+            	model.put("donation", donation);
+            	result.rejectValue("amount", "passLimits", "The amount of the donation pass the limit of the cause. Total amount available: "+
+            	(cause.getBudgetTarget()-cause.getTotalBudget()));
+                return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
+            }
         	cause.addDonation(donation);
+        	donation.setCause(cause);
             this.donationService.saveDonation(donation);
-            Double updateBudget= cause.getBudgetTarget()-(donation.getAmount()+cause.getTotalBudget());
             cause.setTotalBudget(updateBudget);
-            causeService.saveCause(cause);
+            this.causeService.saveCause(cause);
                    
         }
         return "redirect:/causes";

@@ -15,12 +15,11 @@
         <form:form modelAttribute="donation" class="form-horizontal" id="add-donation-form">
         <div class="form-group has-feedback">
         	<fmt:message var="amount" key="amount"/>
-      		<fmt:message var="client" key="client"/>
       		<form:hidden path="donationDate"/>
       		<input type="hidden" name="id" value="${id}"/>
       		
            <petclinic:inputField label="${amount}" name="amount"/>
-           <petclinic:inputField label="${client}" name="client"/>
+       
            
                     
         </div>

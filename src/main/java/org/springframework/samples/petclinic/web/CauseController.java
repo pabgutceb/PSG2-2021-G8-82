@@ -128,7 +128,8 @@ public class CauseController {
             model.put("donation", donation);
             return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
         } else {
-        	Double updateBudget= donation.getAmount()+cause.getTotalBudget();
+        	final Owner principal = this.ownerService.getPrincipal();
+			Double updateBudget= donation.getAmount()+cause.getTotalBudget();
         	if((cause.getBudgetTarget()- updateBudget)==0) {
             	cause.setIsClosed(true);
             }else if((cause.getBudgetTarget()- updateBudget)<0){
@@ -137,8 +138,10 @@ public class CauseController {
             	(cause.getBudgetTarget()-cause.getTotalBudget()));
                 return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
             }
+        	String client=principal.getFirstName()+" "+principal.getLastName(); 
         	cause.addDonation(donation);
         	donation.setCause(cause);
+        	donation.setClient(client);
             this.donationService.saveDonation(donation);
             cause.setTotalBudget(updateBudget);
             this.causeService.saveCause(cause);

@@ -30,7 +30,7 @@ public class Donation extends BaseEntity{
 	@NotNull
 	private LocalDate donationDate;
 
-	@NotNull
+	
 	@Column(name = "client")
 	private String client;
 	

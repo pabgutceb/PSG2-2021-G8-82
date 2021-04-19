@@ -138,10 +138,9 @@ public class CauseController {
             	(cause.getBudgetTarget()-cause.getTotalBudget()));
                 return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
             }
-        	String client=principal.getFirstName()+" "+principal.getLastName(); 
         	cause.addDonation(donation);
         	donation.setCause(cause);
-        	donation.setClient(client);
+        	donation.setClient(principal);
             this.donationService.saveDonation(donation);
             cause.setTotalBudget(updateBudget);
             this.causeService.saveCause(cause);

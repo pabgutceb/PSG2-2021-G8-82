@@ -31,8 +31,9 @@ public class Donation extends BaseEntity{
 	private LocalDate donationDate;
 
 	
-	@Column(name = "client")
-	private String client;
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
+	private Owner owner;
 	
 	public Cause getCause() {
 		return this.cause;
@@ -63,17 +64,12 @@ public class Donation extends BaseEntity{
 		this.donationDate = donationDate;
 	}
 
-
-	
-	public String getClient() {
-		return this.client;
+	public Owner getClient() {
+		return this.owner;
 	}
-
-
 	
-	public void setClient(String client) {
-		this.client = client;
+	public void setClient(Owner owner) {
+		this.owner = owner;
 	}
-
 	
 }

@@ -20,7 +20,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -120,18 +119,19 @@ public class CauseController {
     }
 
     @PostMapping(value = "/causes/{causeId}/donations/new")
-    public String processCreationForm(@ModelAttribute Cause cause, @Valid Donation donation, BindingResult result, ModelMap model) {
-        donation.setCause(cause);
+    public String processCreationForm(@PathVariable("causeId") final int causeId, @Valid Donation donation, BindingResult result, ModelMap model) {
+       Cause cause= causeService.findCauseById(causeId);
         if (result.hasErrors()) {
             model.put("donation", donation);
             return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
         } else {
+        	cause.addDonation(donation);
             this.donationService.saveDonation(donation);
-            cause.addDonation(donation);
-           
-            this.causeService.saveCause(cause);
-            }
-
+            Double updateBudget= cause.getBudgetTarget()-(donation.getAmount()+cause.getTotalBudget());
+            cause.setTotalBudget(updateBudget);
+            causeService.saveCause(cause);
+                   
+        }
         return "redirect:/causes";
         }
 	

@@ -7,7 +7,7 @@
 
 
 <petclinic:layout pageName="donations">
-
+	<jsp:body>
         <h2><c:if test="${donation['new']}"><fmt:message key="newDonation"/></c:if></h2>
 
         
@@ -18,7 +18,7 @@
       		<fmt:message var="client" key="client"/>
       		<form:hidden path="donationDate"/>
       		<input type="hidden" name="id" value="${id}"/>
-      		<input type="hidden" name="id" value="${cause.id}"/>
+      		
            <petclinic:inputField label="${amount}" name="amount"/>
            <petclinic:inputField label="${client}" name="client"/>
            
@@ -35,4 +35,5 @@
             </div>
         </div>
     </form:form>
+    </jsp:body>
 </petclinic:layout>

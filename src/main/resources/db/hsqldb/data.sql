@@ -64,3 +64,7 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
+
+INSERT INTO causes VALUES (1,'3000.0',  'Recolecta para ayudar a los perros de la calle',false,'Save Dogs',  'PETSONG', '0.0',3);
+INSERT INTO causes VALUES (2, '4000.0','Recolecta para ayudar a los gatos de la calle',false,'Save Cats',    'CATSONG','0.0',2 );
+

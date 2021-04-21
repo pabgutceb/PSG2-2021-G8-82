@@ -17,25 +17,24 @@ Prior to the scrum retrospective meeting, the scrum master will compute a total 
 
 In the retrospective meeting, the team has a discussion about those results.
 
-## Example:
+## Face leyend
 
-### Sprint 3: L3-Measurement 
-
-| Day           | J. A. Parejo  |
-| ------------- | ------------- |
-| Day 1         |    :smiley: (Meaning that I am learning, I like the work and I think I can do it without problems, but with some effort) |
-| Day 2         |    - (Meaning that I did no work regarding the PSG2 project)           |
-| Day 3         |    :neutral_face:  (Meaning that I feel I had to struggle, but the assigned work was fair and the day productive)          |:fearful:
-| Day 4         |    :worried: (Meaning that I feel I have serious difficulties to accomplish the task, or the productivity of my day was awful)           |
-| Day 5         |    :fearful:   (I´m desperate, I need help)        |
-
+| Face           | Meaning                                                      |
+| -------------- | ------------------------------------------------------------ |
+| :smiley:       | I am learning, I like the work and I think I can do it without problems, but with some effort |
+| -              | I did no work regarding the PSG2 project                     |
+| :neutral_face: | I feel I had to struggle, but the assigned work was fair and the day productive |
+| :worried:      | I feel I have serious difficulties to accomplish the task, or the productivity of my day was awful |
+| :fearful:      | I´m desperate, I need help                                   |
 
 ## Sprint 3
 
 | Day           | Manolo    | Estefanía  | Benji     | Carlos     | Pablo     |
 | ------------- | ------------- | -------------  | -------------  | -------------  | -------------  |
-| Day 1         | 😐        | :smiley: |   :smiley:             |                |      😃          |                |
-| Day 2         |  😃             |:smiley:|  :smiley:              |                |                |                |
-| Day 3         |               |                |                |                |                |                |
-| Day 4         |               |               |                |                |                |                |
-...
+| Day 1         | 😐        | :smiley: |   :smiley:             | :neutral_face: |      😃          |
+| Day 2         |  😃             |:smiley:|  :smiley:              |                |                |
+| Day 3         |               |                |                |                |                |
+| Day 4         |               |               |                |                |                |
+| Day 5 | | | | | |
+| Day 6 | | | | | |
+| Day 7 | | | | | |

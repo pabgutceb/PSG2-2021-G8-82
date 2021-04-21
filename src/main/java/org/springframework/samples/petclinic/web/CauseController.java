@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -149,5 +150,11 @@ public class CauseController {
         return "redirect:/causes";
         }
 	
+	@GetMapping("/causes/{causeId}")
+	public ModelAndView showOwner(@PathVariable("causeId") final int causeId) {
+		final ModelAndView mav = new ModelAndView("causes/causeDetails");
+		mav.addObject(this.causeService.findCauseById(causeId));
+		return mav;
+	}
 
 }

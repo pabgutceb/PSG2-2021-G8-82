@@ -31,11 +31,11 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.stream.Collectors;
 
 /**
  * Simple business object representing a pet.
@@ -66,8 +66,12 @@ public class Pet extends NamedEntity {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")
 	private Set<Booking> bookings;
 
-	public Set<Booking> getBookings() {
-		return bookings;
+	public List<Booking> getBookings() {
+		List<Booking> res = bookings.stream().filter(b->b.getCanceled().equals(false))
+				.filter(b->b.getStartDate().isAfter(LocalDate.now()))
+				.collect(Collectors.toList());
+		res.sort(Comparator.comparing(Booking::getStartDate));
+		return res;
 	}
 
 	public void setBookings(Set<Booking> bookings) {

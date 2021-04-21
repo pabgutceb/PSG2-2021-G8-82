@@ -17,7 +17,7 @@ Prior to the scrum retrospective meeting, the scrum master will compute a total 
 
 In the retrospective meeting, the team has a discussion about those results.
 
-## Face leyend
+## Face legend
 
 | Face           | Meaning                                                      |
 | -------------- | ------------------------------------------------------------ |
@@ -29,12 +29,12 @@ In the retrospective meeting, the team has a discussion about those results.
 
 ## Sprint 3
 
-| Day           | Manolo    | Estefanía  | Benji     | Carlos     | Pablo     |
-| ------------- | ------------- | -------------  | -------------  | -------------  | -------------  |
-| Day 1         | 😐        | :smiley: |   :smiley:             | :neutral_face: |      😃          |
-| Day 2         |  😃             |:smiley:|  :smiley:              |                |                |
-| Day 3         |               |                |                |                |                |
-| Day 4         |               |               |                |                |                |
-| Day 5 | | | | | |
-| Day 6 | | | | | |
-| Day 7 | | | | | |
+| Day   | Manolo | Estefanía |  Benji   |     Carlos     | Pablo |
+| ----- | :----: | :-------: | :------: | :------------: | :---: |
+| Day 1 |   😐    | :smiley:  | :smiley: | :neutral_face: |   😃   |
+| Day 2 |   😃    | :smiley:  | :smiley: |                |       |
+| Day 3 |        |           |          |                |       |
+| Day 4 |        |           |          |                |       |
+| Day 5 |        |           |          |                |       |
+| Day 6 |        |           |          |                |       |
+| Day 7 |        |           |          |                |       |

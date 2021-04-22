@@ -20,13 +20,16 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Booking;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.repository.AdoptionRequestRepository;
 import org.springframework.samples.petclinic.repository.BookingRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
+import org.springframework.samples.petclinic.service.exceptions.PetTransactionFromUnauthorizedOwner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -45,6 +48,9 @@ public class PetService {
 	private final VisitRepository visitRepository;
 	
 	private final BookingRepository bookingRepository;
+	
+	@Autowired
+	private OwnerService ownerService;
 	
 
 	@Autowired
@@ -75,6 +81,17 @@ public class PetService {
 	public Visit findVisitById(final int id) throws DataAccessException {
 		return this.visitRepository.findById(id);
 	}
+	
+	@Transactional(readOnly = true)
+	public Collection<Pet> findAvailableForAdoptionRequestByOwner(Owner owner){
+		return petRepository.findAvailableForAdoptionRequestByOwnerId(owner.getId());
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<Pet> findAvailableForAdoptionRequestByPrincipal(){
+		Owner ownerPrincipal = ownerService.getPrincipal();
+		return findAvailableForAdoptionRequestByOwner(ownerPrincipal);
+	}
 
 	@Transactional(rollbackFor = DuplicatedPetNameException.class)
 	public void savePet(final Pet pet) throws DataAccessException, DuplicatedPetNameException {
@@ -83,6 +100,29 @@ public class PetService {
             	throw new DuplicatedPetNameException();
             }else
                 this.petRepository.save(pet);                
+	}
+	
+	/**
+	Check if an Owner has authorization to perform an action related to a pet
+	@param
+		pet - The pet related to the action
+		owner - The owner that is trying to perform the action over a pet
+	 * @throws PetTransactionFromUnauthorizedOwner if the Owner is not the real owner of the pet
+	@throws what kind of exception does this method throw
+	*/
+	@Transactional(readOnly = true)
+	public void checkIfOwnerIsAuthorized(final Pet pet, final Owner owner) throws PetTransactionFromUnauthorizedOwner {
+		Pet petFromBD = findPetById(pet.getId());
+		Owner ownerFromBD = ownerService.findOwnerById(owner.getId());
+		
+		if(!petFromBD.getOwner().equals(ownerFromBD)) {
+			throw new PetTransactionFromUnauthorizedOwner(
+					String.format(
+							"The owner%d is not authorized to perform actions over pet%d, only owner%d is authorized", 
+							ownerFromBD.getId(), 
+							petFromBD.getId(),
+							petFromBD.getOwner().getId()));
+		}
 	}
 
 

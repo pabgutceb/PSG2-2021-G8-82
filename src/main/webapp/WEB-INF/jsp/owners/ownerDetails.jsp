@@ -4,6 +4,8 @@
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="owners">
@@ -59,16 +61,34 @@
                         <dd><c:out value="${pet.type.name}"/></dd>
                     </dl>
                     
-					<spring:url value="/adoptions/requests/pet/{petId}/new" var="newAdoptionRequest">
-                               <spring:param name="petId" value="${pet.id}"/>
-                    </spring:url>
-                   	<a href="${fn:escapeXml(newAdoptionRequest)}" class="btn btn-default"><fmt:message key="adoptions.newAdoptionRequest"/></a>
+					<sec:authorize access="hasAnyAuthority('owner')">
+						<c:if test="${pet.owner.user.username == principalUsername}">
+							<spring:url value="/adoptions/requests/pet/{petId}/new" var="newAdoptionRequest">
+		                               <spring:param name="petId" value="${pet.id}"/>
+		                    </spring:url>
+		                   	<a href="${fn:escapeXml(newAdoptionRequest)}" class="btn btn-default"><fmt:message key="adoptions.newAdoptionRequest"/></a>
+						
+						<spring:url value="/owners/{ownerId}/pets/{petId}/delete" var="deletePetUrl">
+	                               <spring:param name="ownerId" value="${owner.id}"/>
+	                               <spring:param name="petId" value="${pet.id}"/>
+	                    </spring:url>
+	                   	<a href="${fn:escapeXml(deletePetUrl)}" class="btn btn-default"><fmt:message key="deletePet"/></a>
+	                   	</c:if>
+                   	</sec:authorize>
                     
-					<spring:url value="/owners/{ownerId}/pets/{petId}/delete" var="deletePetUrl">
-                               <spring:param name="ownerId" value="${owner.id}"/>
-                               <spring:param name="petId" value="${pet.id}"/>
-                    </spring:url>
-                   	<a href="${fn:escapeXml(deletePetUrl)}" class="btn btn-default"><fmt:message key="deletePet"/></a>
+                    <sec:authorize access="hasAnyAuthority('admin')">
+						<spring:url value="/adoptions/requests/pet/{petId}/new" var="newAdoptionRequest">
+	                               <spring:param name="petId" value="${pet.id}"/>
+	                    </spring:url>
+	                   	<a href="${fn:escapeXml(newAdoptionRequest)}" class="btn btn-default"><fmt:message key="adoptions.newAdoptionRequest"/></a>
+	                   	
+						<spring:url value="/owners/{ownerId}/pets/{petId}/delete" var="deletePetUrl">
+	                               <spring:param name="ownerId" value="${owner.id}"/>
+	                               <spring:param name="petId" value="${pet.id}"/>
+	                    </spring:url>
+	                   	<a href="${fn:escapeXml(deletePetUrl)}" class="btn btn-default"><fmt:message key="deletePet"/></a>
+	                   	
+                   	</sec:authorize>
                 </td>
                 <td valign="top">
                     <table class="table-condensed">
@@ -109,14 +129,6 @@
                                 </spring:url>
                                 <a href="${fn:escapeXml(visitUrl)}"><fmt:message key="addVisit"/></a>
                             </td>
-							<td>
-								<spring:url value="/owners/{ownerId}/pets/{petId}/delete" var="deletePetUrl">
-                                    <spring:param name="ownerId" value="${owner.id}"/>
-                                    <spring:param name="petId" value="${pet.id}"/>
-                                </spring:url>
-                                <a href="${fn:escapeXml(deletePetUrl)}"><fmt:message key="deletePet"/></a>
-
-							</td>
 						</tr>
                     </table>
                 </td>

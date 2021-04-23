@@ -27,6 +27,17 @@ public class Booking extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "pet_id")
 	private Pet pet;
+	
+	@NotNull
+	private Boolean canceled = false;
+
+	public Boolean getCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(Boolean canceled) {
+		this.canceled = canceled;
+	}
 
 	public LocalDate getStartDate() {
 		return startDate;

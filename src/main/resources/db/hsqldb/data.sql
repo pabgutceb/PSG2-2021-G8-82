@@ -68,3 +68,15 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04',
 INSERT INTO causes VALUES (1,'3000.0',  'Recolecta para ayudar a los perros de la calle',false,'Save Dogs',  'PETSONG', '0.0',3);
 INSERT INTO causes VALUES (2, '4000.0','Recolecta para ayudar a los gatos de la calle',false,'Save Cats',    'CATSONG','0.0',2 );
 
+
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (1, 1, '2021-07-11','2021-07-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (2, 1, '2021-07-13','2021-07-15', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (3, 2, '2021-06-11','2021-06-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (4, 2, '2021-07-11','2021-07-13', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (5, 3, '2021-07-21','2021-07-22', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (6, 4, '2021-08-11','2021-08-14', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (7, 5, '2020-07-11','2020-07-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (8, 6, '2019-07-11','2019-07-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (9, 7, '2021-07-11','2021-07-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (10, 1, '2020-07-13','2020-07-15', false);
+

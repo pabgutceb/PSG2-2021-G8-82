@@ -18,7 +18,7 @@
                 <th><fmt:message key="name"/></th>
                 <th><fmt:message key="birthDate"/></th>
                 <th><fmt:message key="type"/></th>
-                
+                <th></th>
             </tr>
             </thead>
 		<tbody>
@@ -28,7 +28,12 @@
                 <td><c:out value="${adoption.pet.name}"/></td>
                 <td><petclinic:localDate date="${adoption.pet.birthDate}" pattern="yyyy/MM/dd"/></td>
                 <td><c:out value="${adoption.pet.type.name}"/></td>
-               
+               <td>
+               <spring:url value="/adoptions/{adoptionRequestId}/application/new" var="applicationUrl">
+               <spring:param name="adoptionRequestId" value="${adoption.id}"/>
+               </spring:url>
+               <a href="${fn:escapeXml(applicationUrl)}"><fmt:message key="application.create"/></a>
+               </td>
             	</tr>
 
 

@@ -6,9 +6,12 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.AdoptionApplication;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.service.AdoptionApplicationService;
 import org.springframework.samples.petclinic.service.AdoptionRequestService;
+import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.exceptions.PetTransactionFromUnauthorizedOwner;
 import org.springframework.stereotype.Controller;
@@ -26,9 +29,17 @@ public class AdoptionsController {
 	
 	private static final String VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM = 
 			"adoptionRequests/createOrUpdateAdoptionRequestForm";
+	private static final String ADOPTION_APPLICATION_CREATE_OR_UPDATE_FORM = 
+			"adoptionRequests/createOrUpdateAdoptionApplicationForm";
 	
 	@Autowired
 	private AdoptionRequestService adoptionRequestService;
+
+	@Autowired
+	private AdoptionApplicationService adoptionApplicationService;
+	
+	@Autowired
+	private OwnerService ownerService;
 	
 	@Autowired
 	private PetService petService;
@@ -99,6 +110,34 @@ public class AdoptionsController {
 		final Collection<AdoptionRequest> adoptions = this.adoptionRequestService.findAll();
 		model.put("adoptions", adoptions);
 		return "adoptionRequests/adoptionList";
+	}
+	
+	@GetMapping(value = { "/application" })
+	public String adoptionApplicationForm(final Map<String, Object> model) {
+		final Collection<AdoptionRequest> adoptions = this.adoptionRequestService.findAll();
+		model.put("adoptions", adoptions);
+		return "adoptionRequests/adoptionList";
+	}
+	
+	@GetMapping(value = "/{adoptionRequestId}/application/new")
+	public String initNewBookingForm(@PathVariable("adoptionRequestId") final int adoptionRequestId, final Map<String, Object> model) {
+		AdoptionApplication adoptionApplication = new AdoptionApplication();
+		adoptionApplication.setAdoptionRequest(this.adoptionRequestService.findById(adoptionRequestId));
+		model.put("adoptionApplication",adoptionApplication);
+		
+		return AdoptionsController.ADOPTION_APPLICATION_CREATE_OR_UPDATE_FORM;
+	}
+
+	@PostMapping(value = "/{adoptionRequestId}/application/new")
+	public String processNewBookingForm(@Valid final AdoptionApplication adoptionApplication, final BindingResult result) {
+		adoptionApplication.setOwner(ownerService.getPrincipal());
+		if (result.hasErrors()) {
+			return AdoptionsController.ADOPTION_APPLICATION_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+				this.adoptionApplicationService.saveAdoptionApplication(adoptionApplication);
+				return "redirect:/adoptions";
+		}
 	}
 
 }

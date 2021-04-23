@@ -11,7 +11,7 @@
 
     <jsp:body>
         <h2><c:if test="${adoptionRequest['new']}"><fmt:message key="adoptionRequest.new"/></c:if></h2>
-		<h3>Pet</h3>
+		<h3><fmt:message key="pet"/></h3>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -23,7 +23,7 @@
             </thead>
             <tr>
                 <td><c:out value="${pet.name}"/></td>
-                <td><petclinic:localDate date="${birthDate}" pattern="yyyy/MM/dd"/></td>
+                <td><petclinic:localDate date="${pet.birthDate}" pattern="yyyy/MM/dd"/></td>
                 <td><c:out value="${pet.type.name}"/></td>
                 <td><c:out value="${pet.owner.firstName} ${pet.owner.lastName}"/></td>
             </tr>

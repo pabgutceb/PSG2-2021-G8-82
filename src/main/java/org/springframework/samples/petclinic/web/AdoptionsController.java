@@ -87,7 +87,7 @@ public class AdoptionsController {
 			} catch (PetTransactionFromUnauthorizedOwner e) {
 				adoptionRequest.setPet(null);
 				model.put("adoptionRequest", adoptionRequest);
-				return initCreationForm(adoptionRequest.getPet().getId(), new ModelMap());
+				return String.format("redirect:/adoptions/requests/pet/%d/new", petId);
 			}
 			
 		}

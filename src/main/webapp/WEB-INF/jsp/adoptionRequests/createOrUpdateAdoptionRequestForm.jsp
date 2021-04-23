@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 
@@ -58,7 +59,10 @@
 	                
 	                </c:otherwise>
                 </c:choose>
-                    <button class="btn btn-link" onclick="javascript:history.back()"><fmt:message key="cancel"/></button>
+                	    <spring:url value="/owners/{ownerId}" var="cancelUrl">
+				        <spring:param name="ownerId" value="${adoptionRequest.pet.owner.id}"/>
+				    	</spring:url>
+                    <a class="btn btn-link" href="${fn:escapeXml(cancelUrl)}"><fmt:message key="cancel"/></a>
                 </div>
             </div>
         </form:form>

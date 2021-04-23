@@ -15,13 +15,16 @@
  */
 package org.springframework.samples.petclinic.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 
@@ -57,4 +60,12 @@ public interface PetRepository extends CrudRepository<Pet, Integer> {
 	@Modifying
 	@Query("DELETE FROM Pet p WHERE p = ?1")
 	void delete(Pet pet);
+	
+	/**
+	 * Retrieve all Pets that are available for opening an adoption process.
+	 * @return a Collection of Pets
+	 */
+	//pet <> adopReq.pet and || AdoptionRequest adopReq
+	@Query("SELECT pet FROM Pet pet WHERE pet.owner.id = :ownerId AND pet NOT IN (SELECT DISTINCT a.pet FROM AdoptionRequest a)")
+	Collection<Pet> findAvailableForAdoptionRequestByOwnerId(@Param("ownerId") int ownerId);
 }

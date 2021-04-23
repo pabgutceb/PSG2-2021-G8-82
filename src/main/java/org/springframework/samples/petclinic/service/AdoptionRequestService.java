@@ -60,4 +60,8 @@ public class AdoptionRequestService {
 		return this.adoptionRequestRepository.findAll();
 	}
 
+	public AdoptionRequest findById(int adoptionRequestId) {
+		return this.adoptionRequestRepository.findById(adoptionRequestId).get();
+	}
+
 }

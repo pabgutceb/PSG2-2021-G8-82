@@ -106,3 +106,7 @@ INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (8, 6, '2
 INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (9, 7, '2021-07-11','2021-07-12', false);
 INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (10, 1, '2020-07-13','2020-07-15', false);
 
+INSERT INTO adoption_requests(id,owner_id, pet_id, approved_application_id) VALUES (1,3,3,null);
+INSERT INTO adoption_requests(id,owner_id, pet_id, approved_application_id) VALUES (2,4,5,null);
+INSERT INTO adoption_requests(id,owner_id, pet_id, approved_application_id) VALUES (3,5,6,null);
+

@@ -26,6 +26,9 @@ public class BookingController {
 
 	private final BookingService bookingService;
 	private final PetService petService;
+	
+	private static final String VIEWS_BOOKING_CREATE_OR_UPDATE_FORM = "pets/createOrUpdateBookingForm";
+
 
 	@Autowired
 	public BookingController(final BookingService bookingService,final PetService petService) {
@@ -53,32 +56,32 @@ public class BookingController {
 	
 	@GetMapping(value = "/owners/*/pets/{petId}/booking/new")
 	public String initNewBookingForm(@PathVariable("petId") final int petId, final Map<String, Object> model) {
-		return "pets/createOrUpdateBookingForm";
+		return BookingController.VIEWS_BOOKING_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/owners/{ownerId}/pets/{petId}/booking/new")
 	public String processNewBookingForm(@Valid final Booking booking, final BindingResult result) {
 		if (result.hasErrors()) {
-			return "pets/createOrUpdateBookingForm";
+			return BookingController.VIEWS_BOOKING_CREATE_OR_UPDATE_FORM;
 		}
 		else {
 			 try{
 				this.bookingService.saveBooking(booking);
              }catch(DateOverlapException ex){
                  result.rejectValue("startDate", "DateOverlap", "There is already a booking on that date");
-                 return "pets/createOrUpdateBookingForm";
+                 return BookingController.VIEWS_BOOKING_CREATE_OR_UPDATE_FORM;
              }
 				return "redirect:/owners/{ownerId}";
 		}
 	}
 	
 	@GetMapping(path = "/owners/{ownerId}/pets/{petId}/booking/{bookingId}/delete")
-	public String deleteVisit(@PathVariable("petId") int petId,@PathVariable("bookingId") int bookingId, ModelMap model, RedirectAttributes redirectAttributes) {
+	public String deleteBooking(@PathVariable("petId") int petId,@PathVariable("bookingId") int bookingId, ModelMap model, RedirectAttributes redirectAttributes) {
 		Booking booking= this.bookingService.findBookingbyId(bookingId);
 		Pet pet = this.petService.findPetById(petId);
-		if (pet.getId()!=null) {
+		if (pet.getId()!=null && !booking.getCanceled()) {
 			this.bookingService.delete(booking);
-			redirectAttributes.addFlashAttribute("message", "Booking successfully deleted!");
+			redirectAttributes.addFlashAttribute("message", "Booking successfully canceled!");
 		} else {
 			redirectAttributes.addFlashAttribute("message", "Booking not found!");
 		}

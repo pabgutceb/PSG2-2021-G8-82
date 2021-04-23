@@ -1,10 +1,10 @@
 package org.springframework.samples.petclinic.web;
 
 import java.util.Collection;
+import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.ehcache.shadow.org.terracotta.offheapstore.util.FindbugsSuppressWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.Pet;
@@ -36,9 +36,9 @@ public class AdoptionsController {
 	@GetMapping(value = "/requests/pet/{petId}/new")
 	public String initCreationForm(@PathVariable("petId") final int petId, final ModelMap model) {
 		//TODO: Change "redirect:/" to "redirect:/adoptions/list"
-		AdoptionRequest newAdoptionRequest = adoptionRequestService.create();
-		Collection<Pet> adoptablePets = petService.findAvailableForAdoptionRequestByPrincipal();
-		Pet pet = petService.findPetById(petId);
+		final AdoptionRequest newAdoptionRequest = this.adoptionRequestService.create();
+		final Collection<Pet> adoptablePets = this.petService.findAvailableForAdoptionRequestByPrincipal();
+		final Pet pet = this.petService.findPetById(petId);
 		
 		newAdoptionRequest.setPet(pet);
 		
@@ -50,7 +50,7 @@ public class AdoptionsController {
 			model.put("messageCode", "error.ownerNotAuthorized");
 			model.put("messageArgument", pet.getOwner().getLastName());
 			model.put("messageType", "danger");
-			return VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
+			return AdoptionsController.VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
 		}else if(!adoptablePets.contains(pet)) {
 			model.put("pet", pet);
 			model.put("isFormDisabled", true);
@@ -59,32 +59,32 @@ public class AdoptionsController {
 			model.put("messageCode", "error.petAlreadyForAdoption");
 			model.put("messageArgument", pet.getName());
 			model.put("messageType", "danger");
-			return VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
+			return AdoptionsController.VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
 		}
 		model.put("isFormDisabled", false);
 		model.put("pet", pet);
 		model.put("adoptablePets", adoptablePets);
 		model.put("adoptionRequest", newAdoptionRequest);
-		return VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
+		return AdoptionsController.VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
 	}
 	
 	@PostMapping(value="/requests/pet/{pet}/new")
 	public String processCreationForm(@PathVariable("pet") final int petId, 
-			@Valid AdoptionRequest adoptionRequest, 
+			@Valid final AdoptionRequest adoptionRequest, 
 			final BindingResult result, 
-			final ModelMap model, RedirectAttributes redirectAttributes) {
+			final ModelMap model, final RedirectAttributes redirectAttributes) {
 		
 		if (result.hasErrors()) {
 			model.put("adoptionRequest", adoptionRequest);
-			return VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
+			return AdoptionsController.VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
 		}else {
 			try {
-				adoptionRequestService.saveAdoptionRequest(adoptionRequest);
+				this.adoptionRequestService.saveAdoptionRequest(adoptionRequest);
 				redirectAttributes.addFlashAttribute("messageCode", "adoptions.newAdoptionRequestSuccess");
 				redirectAttributes.addFlashAttribute("messageArgument", adoptionRequest.getPet().getName());
 				redirectAttributes.addFlashAttribute("messageType", "success");
 				return "redirect:/";
-			} catch (PetTransactionFromUnauthorizedOwner e) {
+			} catch (final PetTransactionFromUnauthorizedOwner e) {
 				adoptionRequest.setPet(null);
 				model.put("adoptionRequest", adoptionRequest);
 				return String.format("redirect:/adoptions/requests/pet/%d/new", petId);
@@ -92,6 +92,13 @@ public class AdoptionsController {
 			
 		}
 		
+	}
+	
+	@GetMapping(value = { "" })
+	public String showAdoptionList(final Map<String, Object> model) {
+		final Collection<AdoptionRequest> adoptions = this.adoptionRequestService.findAll();
+		model.put("adoptions", adoptions);
+		return "adoptionRequests/adoptionList";
 	}
 
 }

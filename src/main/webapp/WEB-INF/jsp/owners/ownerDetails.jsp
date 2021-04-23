@@ -58,6 +58,17 @@
                         <dt><fmt:message key="type"/></dt>
                         <dd><c:out value="${pet.type.name}"/></dd>
                     </dl>
+                    
+					<spring:url value="/adoptions/requests/pet/{petId}/new" var="newAdoptionRequest">
+                               <spring:param name="petId" value="${pet.id}"/>
+                    </spring:url>
+                   	<a href="${fn:escapeXml(newAdoptionRequest)}" class="btn btn-default"><fmt:message key="adoptions.newAdoptionRequest"/></a>
+                    
+					<spring:url value="/owners/{ownerId}/pets/{petId}/delete" var="deletePetUrl">
+                               <spring:param name="ownerId" value="${owner.id}"/>
+                               <spring:param name="petId" value="${pet.id}"/>
+                    </spring:url>
+                   	<a href="${fn:escapeXml(deletePetUrl)}" class="btn btn-default"><fmt:message key="deletePet"/></a>
                 </td>
                 <td valign="top">
                     <table class="table-condensed">

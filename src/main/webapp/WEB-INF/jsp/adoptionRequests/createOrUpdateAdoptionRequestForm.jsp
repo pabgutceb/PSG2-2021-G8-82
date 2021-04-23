@@ -10,20 +10,55 @@
 
     <jsp:body>
         <h2><c:if test="${adoptionRequest['new']}"><fmt:message key="adoptionRequest.new"/></c:if></h2>
+		<h3>Pet</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><fmt:message key="name"/></th>
+                <th><fmt:message key="birthDate"/></th>
+                <th><fmt:message key="type"/></th>
+                <th><fmt:message key="owner"/></th>
+            </tr>
+            </thead>
+            <tr>
+                <td><c:out value="${pet.name}"/></td>
+                <td><petclinic:localDate date="${birthDate}" pattern="yyyy/MM/dd"/></td>
+                <td><c:out value="${pet.type.name}"/></td>
+                <td><c:out value="${pet.owner.firstName} ${pet.owner.lastName}"/></td>
+            </tr>
+        </table>
 
         <form:form modelAttribute="adoptionRequest" class="form-horizontal">
         	<input type="hidden" name="ownerId" value="${adoptionRequest.owner.id}"/>
+        	<input type="hidden" name="petId" value="${adoptionRequest.pet.id}"/>
             <div class="form-group has-feedback">
             <fmt:message var="pet" key="pet"/>
                 <div class="control-group">
-                    <petclinic:selectField2 name="pet" label="${pet}" items="${adoptablePets}" itemsLabel="name" itemsValue="id" size="5"/>
+                <c:choose>
+                	<c:when test="${not empty adoptionRequest.pet.id}">
+                		<input type="hidden" name="petId" value="${adoptionRequest.pet.id}"/>
+                	</c:when>
+                	<c:otherwise>
+                		<petclinic:selectField2 name="pet" label="${pet}" items="${adoptablePets}" itemsLabel="name" itemsValue="id" size="5"/>
+                	</c:otherwise>
+                </c:choose>
+                
+                    <!--  -->
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    
-                    <button class="btn btn-default" type="submit"><fmt:message key="adoptionRequest.publish"/></button>
+                <c:choose>
+                    <c:when test="${isFormDisabled}">
+                    	<button class="btn btn-default" type="submit" disabled><fmt:message key="adoptionRequest.publish" /></button>
+                    </c:when>
+	                <c:otherwise>
+	                    <button class="btn btn-default" type="submit"><fmt:message key="adoptionRequest.publish" /></button>
+	                
+	                </c:otherwise>
+                </c:choose>
+                    <button class="btn btn-link" onclick="javascript:history.back()"><fmt:message key="cancel"/></button>
                 </div>
             </div>
         </form:form>

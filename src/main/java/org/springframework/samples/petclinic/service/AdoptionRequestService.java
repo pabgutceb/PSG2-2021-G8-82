@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.Owner;
@@ -23,35 +25,39 @@ public class AdoptionRequestService {
 	
 	@Transactional(readOnly = true)
 	public AdoptionRequest create() {
-		Owner principalOwner = ownerService.getPrincipal();
-		AdoptionRequest res = new AdoptionRequest();
+		final Owner principalOwner = this.ownerService.getPrincipal();
+		final AdoptionRequest res = new AdoptionRequest();
 		res.setOwner(principalOwner);
 		
 		return res;
 	}
 	
 	@Transactional(readOnly = true)
-	public AdoptionRequest findByPet(Pet pet) {
-		return adoptionRequestRepository.findByPet(pet);
+	public AdoptionRequest findByPet(final Pet pet) {
+		return this.adoptionRequestRepository.findByPet(pet);
 	}
 	
 	@Transactional
 	public void saveAdoptionRequest(final AdoptionRequest adoptionRequest) 
 			throws PetTransactionFromUnauthorizedOwner {
-		Owner principalOwner = ownerService.getPrincipal();
-		petService.checkIfOwnerIsAuthorized(adoptionRequest.getPet(), principalOwner);
+		final Owner principalOwner = this.ownerService.getPrincipal();
+		this.petService.checkIfOwnerIsAuthorized(adoptionRequest.getPet(), principalOwner);
 		
 		if(adoptionRequest.isNew()) {
 			// when the AdoptionRequest is new
 			
 			
 			adoptionRequest.setOwner(principalOwner);
-			adoptionRequestRepository.save(adoptionRequest);
+			this.adoptionRequestRepository.save(adoptionRequest);
 
 		}else {
 			// when the AdoptionRequest is being updated
-			adoptionRequestRepository.save(adoptionRequest);
+			this.adoptionRequestRepository.save(adoptionRequest);
 		}
+	}
+	
+	public Collection<AdoptionRequest> findAll() {
+		return this.adoptionRequestRepository.findAll();
 	}
 
 }

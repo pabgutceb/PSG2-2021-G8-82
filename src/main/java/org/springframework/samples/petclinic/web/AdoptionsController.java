@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.web;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -8,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionApplication;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.AdoptionApplicationService;
 import org.springframework.samples.petclinic.service.AdoptionRequestService;
@@ -130,7 +132,7 @@ public class AdoptionsController {
 
 	@PostMapping(value = "/{adoptionRequestId}/application/new")
 	public String processNewBookingForm(@Valid final AdoptionApplication adoptionApplication, final BindingResult result) {
-		adoptionApplication.setOwner(ownerService.getPrincipal());
+		adoptionApplication.setOwner(this.ownerService.getPrincipal());
 		if (result.hasErrors()) {
 			return AdoptionsController.ADOPTION_APPLICATION_CREATE_OR_UPDATE_FORM;
 		}
@@ -139,5 +141,37 @@ public class AdoptionsController {
 				return "redirect:/adoptions";
 		}
 	}
+	
+	@GetMapping(value = { "/applicationList" })
+	public String listApplicationForm(final Map<String, Object> model) {
+		final Owner principal = this.ownerService.getPrincipal();
+		final AdoptionRequest request = this.adoptionRequestService.findByOwner(principal);
+		final List<AdoptionApplication> applications= this.adoptionApplicationService.findByRequest(request);
+		model.put("applications", applications);
+		return "adoptionApplication/applicationList";
+	}
+	
+	@GetMapping(value = { "/applicationList/owners/{ownerId}/adoptions/{adoptionRequestId}/applications/{adoptionApplicationId}"})
+    public String transferPet(@PathVariable int ownerId,@PathVariable int adoptionRequestId, @PathVariable int adoptionApplicationId, RedirectAttributes redirectAttributes) {
+		final Owner principal = this.ownerService.getPrincipal();
+		final Owner ownerSolicitante= this.ownerService.findOwnerById(ownerId);
+		final AdoptionRequest request = this.adoptionRequestService.findById(adoptionRequestId);
+		final AdoptionApplication application= this.adoptionApplicationService.findById(adoptionApplicationId);
+		ownerSolicitante.addPet(request.getPet());
+		principal.removePet(request.getPet());
+		request.setApprovedApplication(application);
+		this.ownerService.saveOwner(ownerSolicitante);
+		this.ownerService.saveOwner(principal);
+		try {
+			this.adoptionRequestService.saveAdoptionRequest(request);
+		} catch (PetTransactionFromUnauthorizedOwner e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+				
+        return "redirect:/adoptions";
+    }
 
 }

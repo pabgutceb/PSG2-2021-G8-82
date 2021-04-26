@@ -64,4 +64,8 @@ public class AdoptionRequestService {
 		return this.adoptionRequestRepository.findById(adoptionRequestId).get();
 	}
 
+	@Transactional(readOnly = true)
+	public AdoptionRequest findByOwner(final Owner owner) {
+		return this.adoptionRequestRepository.findByOwner(owner);
+	}
 }

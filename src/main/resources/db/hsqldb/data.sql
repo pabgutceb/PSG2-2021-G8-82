@@ -4,6 +4,7 @@ INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 -- One owner user, named owner1 with passwor 0wn3r
 INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
+
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (3,'vet1','veterinarian');
@@ -33,15 +34,42 @@ INSERT INTO types VALUES (5, 'bird');
 INSERT INTO types VALUES (6, 'hamster');
 
 INSERT INTO owners VALUES (1, 'George', 'Franklin', '110 W. Liberty St.', 'Madison', '6085551023', 'owner1');
-INSERT INTO owners VALUES (2, 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', '6085551749', 'owner1');
-INSERT INTO owners VALUES (3, 'Eduardo', 'Rodriquez', '2693 Commerce St.', 'McFarland', '6085558763', 'owner1');
-INSERT INTO owners VALUES (4, 'Harold', 'Davis', '563 Friendly St.', 'Windsor', '6085553198', 'owner1');
-INSERT INTO owners VALUES (5, 'Peter', 'McTavish', '2387 S. Fair Way', 'Madison', '6085552765', 'owner1');
-INSERT INTO owners VALUES (6, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', '6085552654', 'owner1');
-INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085555387', 'owner1');
-INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683', 'owner1');
-INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435', 'owner1');
-INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'owner1');
+
+INSERT INTO users(username,password,enabled) VALUES ('owner2','0wn3r',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (4,'owner2','owner');
+INSERT INTO owners VALUES (2, 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', '6085551749', 'owner2');
+
+INSERT INTO users(username,password,enabled) VALUES ('owner3','0wn3r',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (5,'owner3','owner');
+INSERT INTO owners VALUES (3, 'Eduardo', 'Rodriquez', '2693 Commerce St.', 'McFarland', '6085558763', 'owner3');
+
+INSERT INTO users(username,password,enabled) VALUES ('owner4','0wn3r',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (6,'owner4','owner');
+INSERT INTO owners VALUES (4, 'Harold', 'Davis', '563 Friendly St.', 'Windsor', '6085553198', 'owner4');
+
+INSERT INTO users(username,password,enabled) VALUES ('owner5','0wn3r',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (7,'owner5','owner');
+INSERT INTO owners VALUES (5, 'Peter', 'McTavish', '2387 S. Fair Way', 'Madison', '6085552765', 'owner5');
+
+INSERT INTO users(username,password,enabled) VALUES ('owner6','0wn3r',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (8,'owner6','owner');
+INSERT INTO owners VALUES (6, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', '6085552654', 'owner6');
+
+INSERT INTO users(username,password,enabled) VALUES ('owner7','0wn3r',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (9,'owner7','owner');
+INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085555387', 'owner7');
+
+INSERT INTO users(username,password,enabled) VALUES ('owner8','0wn3r',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (10,'owner8','owner');
+INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683', 'owner8');
+
+INSERT INTO users(username,password,enabled) VALUES ('owner9','0wn3r',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (11,'owner9','owner');
+INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435', 'owner9');
+
+INSERT INTO users(username,password,enabled) VALUES ('owner10','0wn3r',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (12,'owner10','owner');
+INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'owner10');
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);
@@ -61,4 +89,24 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (1, 7, '2013-01-01',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
+
+
+INSERT INTO causes VALUES (1,'3000.0',  'Recolecta para ayudar a los perros de la calle',false,'Save Dogs',  'PETSONG', '0.0',3);
+INSERT INTO causes VALUES (2, '4000.0','Recolecta para ayudar a los gatos de la calle',false,'Save Cats',    'CATSONG','0.0',2 );
+
+
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (1, 1, '2021-07-11','2021-07-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (2, 1, '2021-07-13','2021-07-15', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (3, 2, '2021-06-11','2021-06-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (4, 2, '2021-07-11','2021-07-13', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (5, 3, '2021-07-21','2021-07-22', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (6, 4, '2021-08-11','2021-08-14', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (7, 5, '2020-07-11','2020-07-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (8, 6, '2019-07-11','2019-07-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (9, 7, '2021-07-11','2021-07-12', false);
+INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (10, 1, '2020-07-13','2020-07-15', false);
+
+INSERT INTO adoption_requests(id,owner_id, pet_id, approved_application_id) VALUES (1,3,3,null);
+INSERT INTO adoption_requests(id,owner_id, pet_id, approved_application_id) VALUES (2,4,5,null);
+INSERT INTO adoption_requests(id,owner_id, pet_id, approved_application_id) VALUES (3,5,6,null);
 

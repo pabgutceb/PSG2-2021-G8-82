@@ -40,7 +40,7 @@
 								<spring:param name="adoptionApplicationId"
 									value="${application.id}" />
 							</spring:url> <a href="${fn:escapeXml(applicationUrl)}"><fmt:message
-									key="application.create" /></a></td>
+									key="application.accept" /></a></td>
 					</c:if>
             	</tr>
 

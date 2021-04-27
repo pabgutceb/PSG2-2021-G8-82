@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,7 +22,7 @@ public class Donation extends BaseEntity{
 	
 	@NotNull
 	@Column(name = "amount")
-	@Min(0)
+	@Positive 
 	private Double amount;
 	
 	@Column(name = "donation_date")
@@ -40,7 +40,7 @@ public class Donation extends BaseEntity{
 	}
 
 	
-	public void setCause(Cause cause) {
+	public void setCause(final Cause cause) {
 		this.cause = cause;
 	}
 
@@ -50,7 +50,7 @@ public class Donation extends BaseEntity{
 	}
 
 	
-	public void setAmount(Double amount) {
+	public void setAmount(final Double amount) {
 		this.amount = amount;
 	}
 
@@ -60,7 +60,7 @@ public class Donation extends BaseEntity{
 	}
 
 	
-	public void setDonationDate(LocalDate donationDate) {
+	public void setDonationDate(final LocalDate donationDate) {
 		this.donationDate = donationDate;
 	}
 
@@ -68,7 +68,7 @@ public class Donation extends BaseEntity{
 		return this.owner;
 	}
 	
-	public void setClient(Owner owner) {
+	public void setClient(final Owner owner) {
 		this.owner = owner;
 	}
 	

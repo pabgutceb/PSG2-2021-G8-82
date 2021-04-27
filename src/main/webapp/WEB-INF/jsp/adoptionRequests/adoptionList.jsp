@@ -31,12 +31,13 @@
 						<td><petclinic:localDate date="${adoption.pet.birthDate}"
 								pattern="yyyy/MM/dd" /></td>
 						<td><c:out value="${adoption.pet.type.name}" /></td>
-						<td><spring:url
+						<td>
+						<c:if test="${owner!=adoption.owner}"><spring:url
 								value="/adoptions/{adoptionRequestId}/application/new"
 								var="applicationUrl">
 								<spring:param name="adoptionRequestId" value="${adoption.id}" />
 							</spring:url> <a href="${fn:escapeXml(applicationUrl)}"><fmt:message
-									key="application.create" /></a></td>
+									key="application.create" /></a></c:if></td>
 					</c:if>
 				</tr>
 

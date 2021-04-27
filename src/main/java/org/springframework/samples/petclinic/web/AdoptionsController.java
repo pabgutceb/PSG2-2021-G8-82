@@ -48,7 +48,7 @@ public class AdoptionsController {
 	
 	@GetMapping(value = "/requests/pet/{petId}/new")
 	public String initCreationForm(@PathVariable("petId") final int petId, final ModelMap model) {
-		//TODO: Change "redirect:/" to "redirect:/adoptions/list"
+
 		final AdoptionRequest newAdoptionRequest = this.adoptionRequestService.create();
 		final Collection<Pet> adoptablePets = this.petService.findAvailableForAdoptionRequestByPrincipal();
 		final Pet pet = this.petService.findPetById(petId);
@@ -109,6 +109,8 @@ public class AdoptionsController {
 	
 	@GetMapping(value = { "" })
 	public String showAdoptionList(final Map<String, Object> model) {
+		final Owner owner = this.ownerService.getPrincipal();
+		model.put("owner", owner);
 		final Collection<AdoptionRequest> adoptions = this.adoptionRequestService.findAll();
 		model.put("adoptions", adoptions);
 		return "adoptionRequests/adoptionList";
@@ -122,16 +124,22 @@ public class AdoptionsController {
 	}
 	
 	@GetMapping(value = "/{adoptionRequestId}/application/new")
-	public String initNewBookingForm(@PathVariable("adoptionRequestId") final int adoptionRequestId, final Map<String, Object> model) {
-		AdoptionApplication adoptionApplication = new AdoptionApplication();
+	public String initNewAdoptionAplicationForm(@PathVariable("adoptionRequestId") final int adoptionRequestId, final Map<String, Object> model) {
+		final AdoptionRequest adoptionRequest = this.adoptionRequestService.findById(adoptionRequestId);
+		final Owner owner = this.ownerService.getPrincipal();
+		if(adoptionRequest.getOwner().equals(owner)) {
+			return "redirect:/adoptions";
+		}
+		final AdoptionApplication adoptionApplication = new AdoptionApplication();
 		adoptionApplication.setAdoptionRequest(this.adoptionRequestService.findById(adoptionRequestId));
+		
 		model.put("adoptionApplication",adoptionApplication);
 		
 		return AdoptionsController.ADOPTION_APPLICATION_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/{adoptionRequestId}/application/new")
-	public String processNewBookingForm(@Valid final AdoptionApplication adoptionApplication, final BindingResult result) {
+	public String processNewAdoptionAplicationForm(@Valid final AdoptionApplication adoptionApplication, final BindingResult result) {
 		adoptionApplication.setOwner(this.ownerService.getPrincipal());
 		if (result.hasErrors()) {
 			return AdoptionsController.ADOPTION_APPLICATION_CREATE_OR_UPDATE_FORM;
@@ -152,7 +160,7 @@ public class AdoptionsController {
 	}
 	
 	@GetMapping(value = { "/applicationList/owners/{ownerId}/adoptions/{adoptionRequestId}/applications/{adoptionApplicationId}"})
-    public String transferPet(@PathVariable int ownerId,@PathVariable int adoptionRequestId, @PathVariable int adoptionApplicationId, RedirectAttributes redirectAttributes) {
+    public String transferPet(@PathVariable final int ownerId,@PathVariable final int adoptionRequestId, @PathVariable final int adoptionApplicationId, final RedirectAttributes redirectAttributes) {
 		final Owner principal = this.ownerService.getPrincipal();
 		final Owner ownerSolicitante= this.ownerService.findOwnerById(ownerId);
 		final AdoptionRequest request = this.adoptionRequestService.findById(adoptionRequestId);
@@ -164,7 +172,7 @@ public class AdoptionsController {
 		this.ownerService.saveOwner(principal);
 		try {
 			this.adoptionRequestService.saveAdoptionRequest(request);
-		} catch (PetTransactionFromUnauthorizedOwner e) {
+		} catch (final PetTransactionFromUnauthorizedOwner e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

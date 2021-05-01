@@ -55,7 +55,7 @@ public class PetService {
 	@Autowired
 	public PetService(final PetRepository petRepository,
 			final VisitRepository visitRepository,
-			BookingRepository bookingRepository) {
+			final BookingRepository bookingRepository) {
 		this.petRepository = petRepository;
 		this.visitRepository = visitRepository;
 		this.bookingRepository = bookingRepository;
@@ -82,20 +82,20 @@ public class PetService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Collection<Pet> findAvailableForAdoptionRequestByOwner(Owner owner){
-		return petRepository.findAvailableForAdoptionRequestByOwnerId(owner.getId());
+	public Collection<Pet> findAvailableForAdoptionRequestByOwner(final Owner owner){
+		return this.petRepository.findAvailableForAdoptionRequestByOwnerId(owner.getId());
 	}
 	
 	@Transactional(readOnly = true)
 	public Collection<Pet> findAvailableForAdoptionRequestByPrincipal(){
-		Owner ownerPrincipal = ownerService.getPrincipal();
-		return findAvailableForAdoptionRequestByOwner(ownerPrincipal);
+		final Owner ownerPrincipal = this.ownerService.getPrincipal();
+		return this.findAvailableForAdoptionRequestByOwner(ownerPrincipal);
 	}
 
 	@Transactional(rollbackFor = DuplicatedPetNameException.class)
 	public void savePet(final Pet pet) throws DataAccessException, DuplicatedPetNameException {
 			final Pet otherPet=pet.getOwner().getPetwithIdDifferent(pet.getName(), pet.getId());
-            if (StringUtils.hasLength(pet.getName()) &&  (otherPet!= null && otherPet.getId()!=pet.getId())) {            	
+            if (StringUtils.hasLength(pet.getName()) &&  (otherPet!= null && !otherPet.getId().equals(pet.getId()))) {            	
             	throw new DuplicatedPetNameException();
             }else
                 this.petRepository.save(pet);                
@@ -111,8 +111,8 @@ public class PetService {
 	*/
 	@Transactional(readOnly = true)
 	public void checkIfOwnerIsAuthorized(final Pet pet, final Owner owner) throws PetTransactionFromUnauthorizedOwner {
-		Pet petFromBD = findPetById(pet.getId());
-		Owner ownerFromBD = ownerService.findOwnerById(owner.getId());
+		final Pet petFromBD = this.findPetById(pet.getId());
+		final Owner ownerFromBD = this.ownerService.findOwnerById(owner.getId());
 		
 		if(!petFromBD.getOwner().equals(ownerFromBD)) {
 			throw new PetTransactionFromUnauthorizedOwner(

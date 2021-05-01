@@ -36,7 +36,7 @@ public class AdoptionApplicationService {
 		return this.adoptionApplicationRepository.findAll();
 	}
 	
-	public AdoptionApplication findById(int adoptionApplicationId) {
-		return this.adoptionApplicationRepository.findById(adoptionApplicationId).get();
+	public AdoptionApplication findById(final int adoptionApplicationId) {
+		return this.adoptionApplicationRepository.findById(adoptionApplicationId).orElse(null);
 	}
 }

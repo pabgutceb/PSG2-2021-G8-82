@@ -69,7 +69,7 @@ public class VetService {
 	@Transactional(rollbackFor = DuplicatedVetNameException.class)
 	public void saveVet(final Vet vet) throws DataAccessException, DuplicatedVetNameException {
 		final Vet otherVet= this.vetRepository.getVetByName(vet.getFirstName(),vet.getLastName());
-        if (StringUtils.hasLength(vet.getFirstName()) && StringUtils.hasLength(vet.getLastName()) && (otherVet!= null && otherVet.getId()!=vet.getId())) {            	
+        if (StringUtils.hasLength(vet.getFirstName()) && StringUtils.hasLength(vet.getLastName()) && (otherVet!= null && !otherVet.getId().equals(vet.getId()))) {            	
         	throw new DuplicatedVetNameException();
         }else
     		this.vetRepository.save(vet);              

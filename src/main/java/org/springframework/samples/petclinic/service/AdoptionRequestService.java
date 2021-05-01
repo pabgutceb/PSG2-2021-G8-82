@@ -60,8 +60,8 @@ public class AdoptionRequestService {
 		return this.adoptionRequestRepository.findAll();
 	}
 
-	public AdoptionRequest findById(int adoptionRequestId) {
-		return this.adoptionRequestRepository.findById(adoptionRequestId).get();
+	public AdoptionRequest findById(final int adoptionRequestId) {
+		return this.adoptionRequestRepository.findById(adoptionRequestId).orElse(null);
 	}
 
 	@Transactional(readOnly = true)

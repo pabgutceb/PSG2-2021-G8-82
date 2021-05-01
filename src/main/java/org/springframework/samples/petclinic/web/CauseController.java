@@ -142,7 +142,7 @@ public class CauseController {
                 	cause.setIsClosed(true);
                 }else if((cause.getBudgetTarget()- updateBudget)<0){
                 	model.put("donation", donation);
-                	result.rejectValue("amount", "passLimits", "The amount of the donation pass the limit of the cause. Total amount available: "+
+                	result.rejectValue("amount", "passLimits", "La cantidad de la donación sobrepasa el límite necesario.Cantidad máxima a ingresar: "+
                 	(cause.getBudgetTarget()-cause.getTotalBudget()));
                     return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
                 }

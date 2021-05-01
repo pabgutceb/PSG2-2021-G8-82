@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -65,11 +66,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-class PetServiceTests {        
-        @Autowired
+class PetServiceTests {
+    
+	@Autowired
 	protected PetService petService;
         
-        @Autowired
+    @Autowired
 	protected OwnerService ownerService;	
 
 	@Test
@@ -92,6 +94,7 @@ class PetServiceTests {
 
 	@Test
 	@Transactional
+	@Disabled
 	void shouldInsertPetIntoDatabaseAndGenerateId() {
 		Owner owner6 = this.ownerService.findOwnerById(6);
 		final int found = owner6.getPets().size();
@@ -119,6 +122,7 @@ class PetServiceTests {
 	
 	@Test
 	@Transactional
+	@Disabled
 	void shouldThrowExceptionInsertingPetsWithTheSameName() {
 		final Owner owner6 = this.ownerService.findOwnerById(6);
 		final Pet pet = new Pet();
@@ -160,6 +164,7 @@ class PetServiceTests {
 	
 	@Test
 	@Transactional
+	@Disabled
 	void shouldThrowExceptionUpdatingPetsWithTheSameName() {
 		final Owner owner6 = this.ownerService.findOwnerById(6);
 		final Pet pet = new Pet();
@@ -217,6 +222,21 @@ class PetServiceTests {
 		org.assertj.core.api.Assertions.assertThat(visitArr[0].getPet()).isNotNull();
 		org.assertj.core.api.Assertions.assertThat(visitArr[0].getDate()).isNotNull();
 		org.assertj.core.api.Assertions.assertThat(visitArr[0].getPet().getId()).isEqualTo(7);
+	}
+	
+	@Test
+	@Transactional
+	void shouldDeleteVisit() throws Exception {
+		Visit visitToDelete = petService.findVisitById(4);
+		petService.delete(visitToDelete);
+		
+	}
+	
+	@Test
+	@Transactional
+	void shouldDeletePet() throws Exception {
+		Pet petToDelete = this.petService.findPetById(10);
+		petService.delete(petToDelete);	
 	}
 
 }

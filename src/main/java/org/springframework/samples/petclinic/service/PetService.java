@@ -124,11 +124,12 @@ public class PetService {
 		}
 	}
 
-
+	@Transactional(readOnly = true)
 	public Collection<Visit> findVisitsByPetId(final int petId) {
 		return this.visitRepository.findByPetId(petId);
 	}
 	
+	@Transactional
 	public void delete(final Pet pet) {
 		for (final Visit v : pet.getVisits()) {
 			this.visitRepository.delete(v);
@@ -139,6 +140,7 @@ public class PetService {
 		this.petRepository.delete(pet);
 	}
 
+	@Transactional
 	public void delete(final Visit visit) {
 			this.visitRepository.delete(visit);
 	}

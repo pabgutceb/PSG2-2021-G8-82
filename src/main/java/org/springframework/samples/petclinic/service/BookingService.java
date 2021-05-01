@@ -20,13 +20,13 @@ public class BookingService {
 	
 
 	@Transactional(readOnly = true)
-	public Booking findBookingbyId(Integer id) throws DataAccessException {
+	public Booking findBookingbyId(final Integer id) throws DataAccessException {
 		return this.bookingRepository.findBookingById(id);
 	}
 
 	@Transactional(rollbackFor = DateOverlapException.class)
 	public void saveBooking(final Booking booking) throws DataAccessException, DateOverlapException {
-		final Integer otherBooking = (int) this.bookingRepository.getBookingByDate(booking.getStartDate(),booking.getFinishDate(),booking.getPet().getId()).stream().filter(b->b.getId()!=booking.getId()).count();
+		final Integer otherBooking = (int) this.bookingRepository.getBookingByDate(booking.getStartDate(),booking.getFinishDate(),booking.getPet().getId()).stream().filter(b->!b.getId().equals(booking.getId())).count();
         if (otherBooking!=0) {            	
         	throw new DateOverlapException();
         }else

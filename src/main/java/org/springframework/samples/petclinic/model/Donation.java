@@ -22,7 +22,7 @@ public class Donation extends BaseEntity{
 	
 	@NotNull
 	@Column(name = "amount")
-	@Positive 
+	@Positive(message = "La cantidad a ingresar debe ser mayor a 0")
 	private Double amount;
 	
 	@Column(name = "donation_date")

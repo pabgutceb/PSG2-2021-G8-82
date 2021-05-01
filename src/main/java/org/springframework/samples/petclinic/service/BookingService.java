@@ -26,7 +26,7 @@ public class BookingService {
 
 	@Transactional(rollbackFor = DateOverlapException.class)
 	public void saveBooking(final Booking booking) throws DataAccessException, DateOverlapException {
-		final Integer otherBooking = (int) this.bookingRepository.getBookingByDate(booking.getStartDate(),booking.getFinishDate(),booking.getPet().getId()).stream().filter(b->b.getId()!=booking.getId()).count();
+		final Integer otherBooking = (int) this.bookingRepository.getBookingByDate(booking.getStartDate(),booking.getFinishDate(),booking.getPet().getId()).stream().filter(b->!b.getId().equals(booking.getId())).count();
         if (otherBooking!=0) {            	
         	throw new DateOverlapException();
         }

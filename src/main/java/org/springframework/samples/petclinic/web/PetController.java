@@ -53,7 +53,11 @@ public class PetController {
 	private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
 
 	private final PetService petService;
-        private final OwnerService ownerService;
+    private final OwnerService ownerService;
+    
+    private final static String VIEW_OWNER = "redirect:/owners/{ownerId}";
+    
+   
 
 	@Autowired
 	public PetController(final PetService petService, final OwnerService ownerService) {
@@ -71,15 +75,6 @@ public class PetController {
 		return this.ownerService.findOwnerById(ownerId);
 	}
         
-        /*@ModelAttribute("pet")
-	public Pet findPet(@PathVariable("petId") Integer petId) {
-            Pet result=null;
-		if(petId!=null)
-                    result=this.clinicService.findPetById(petId);
-                else
-                    result=new Pet();
-            return result;
-	}*/
                 
 	@InitBinder("owner")
 	public void initOwnerBinder(final WebDataBinder dataBinder) {
@@ -102,7 +97,7 @@ public class PetController {
 	@PostMapping(value = "/pets/new")
 	public String processCreationForm(final Owner owner, @Valid final Pet pet, final BindingResult result, final ModelMap model) {		
 		if (result.hasErrors()) {
-			System.out.println(result.getAllErrors());
+			System.err.println(result.getAllErrors());
 			model.put("pet", pet);
 			return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		}
@@ -114,7 +109,7 @@ public class PetController {
                         result.rejectValue("name", "duplicate", "already exists");
                         return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
                     }
-                    return "redirect:/owners/{ownerId}";
+                    return PetController.VIEW_OWNER;
 		}
 	}
 
@@ -150,15 +145,15 @@ public class PetController {
                         result.rejectValue("name", "duplicate", "already exists");
                         return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
                     }
-			return "redirect:/owners/{ownerId}";
+			return PetController.VIEW_OWNER;
 		}
 	}
 
 
 	
 	@GetMapping(value = { "/pets/{petId}/delete"})
-    public String deletePet(@PathVariable int ownerId,@PathVariable int petId, @RequestParam(value = "confirm", required = false) Boolean confirm, RedirectAttributes redirectAttributes) {
-		Pet pet = this.petService.findPetById(petId);
+    public String deletePet(@PathVariable final int ownerId,@PathVariable final int petId, @RequestParam(value = "confirm", required = false) final Boolean confirm, final RedirectAttributes redirectAttributes) {
+		final Pet pet = this.petService.findPetById(petId);
         if(confirm!=null && confirm) {
         	redirectAttributes.addFlashAttribute("messageCode", "vet.deleteSuccess");
             redirectAttributes.addFlashAttribute("messageArgument", pet.getName());
@@ -172,13 +167,13 @@ public class PetController {
             redirectAttributes.addFlashAttribute("buttonURL", String.format("/owners/%d/pets/%d/delete?confirm=true",ownerId, petId));
             
         }
-        return "redirect:/owners/{ownerId}";
+        return PetController.VIEW_OWNER;
     }
 	
 	@GetMapping(path = "/pets/{petId}/visits/{visitId}/delete")
-	public String deleteVisit(@PathVariable("petId") int petId,@PathVariable("visitId") int visitId, ModelMap model, RedirectAttributes redirectAttributes) {
-		Visit visit = this.petService.findVisitById(visitId);
-		Pet pet = this.petService.findPetById(petId);
+	public String deleteVisit(@PathVariable("petId") final int petId,@PathVariable("visitId") final int visitId, final ModelMap model, final RedirectAttributes redirectAttributes) {
+		final Visit visit = this.petService.findVisitById(visitId);
+		final Pet pet = this.petService.findPetById(petId);
 		if (pet.getId()!=null) {
 			this.petService.delete(visit);
 			redirectAttributes.addFlashAttribute("message", "Visita borrada correctamente");
@@ -186,7 +181,7 @@ public class PetController {
 			redirectAttributes.addFlashAttribute("message", "Visita no encontrada");
 		}
 
-		return "redirect:/owners/{ownerId}";
+		return PetController.VIEW_OWNER;
 	}
 	
 }

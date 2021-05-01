@@ -25,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
+	private final String owner = "owner";
 
 	@Autowired
 	DataSource dataSource;
@@ -36,11 +38,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
 				.antMatchers("/users/new").permitAll()
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
-				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				
+				.antMatchers("/owners/**").hasAnyAuthority(this.owner,"admin")				
 				.antMatchers("/vets/**").authenticated()
-				.antMatchers("/adoptions/requests/pet/{petId}/new").hasAnyAuthority("owner")
-				.antMatchers("/causes/**").hasAnyAuthority("owner")
-				.antMatchers("/adoptions/**").hasAnyAuthority("owner")
+				.antMatchers("/adoptions/requests/pet/{petId}/new").hasAnyAuthority(this.owner)
+				.antMatchers("/causes/**").hasAnyAuthority(this.owner)
+				.antMatchers("/adoptions/**").hasAnyAuthority(this.owner)
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
@@ -74,8 +76,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {	    
-		final PasswordEncoder encoder =  NoOpPasswordEncoder.getInstance();
-	    return encoder;
+	    return NoOpPasswordEncoder.getInstance();
 	}
 	
 }

@@ -33,6 +33,8 @@ public class CauseController {
 	private final CauseService causeService;
 	private final OwnerService ownerService;
 	private final DonationService donationService;
+	private static final String VIEW_CAUSES_LIST = "redirect:/causes";
+	private static final String donacion = "donation";
 	
 	@Autowired
 	public CauseController(final CauseService causeService, final OwnerService ownerService,final DonationService donationService) {
@@ -66,7 +68,7 @@ public class CauseController {
 			final Owner principal = this.ownerService.getPrincipal();
 			cause.setOwner(principal);
 			this.causeService.saveCause(cause);
-			return "redirect:/causes";
+			return CauseController.VIEW_CAUSES_LIST;
 		}
 	}
 	
@@ -84,7 +86,7 @@ public class CauseController {
 		} else {
 			cause.setId(causeId);
 			this.causeService.saveCause(cause);
-			return "redirect:/causes";
+			return CauseController.VIEW_CAUSES_LIST;
 		}
 	}
 	
@@ -114,12 +116,12 @@ public class CauseController {
 		 final Cause cause= this.causeService.findCauseById(causeId);
 
 		 if (cause.getIsClosed()){
-             return "redirect:/causes";
+             return CauseController.VIEW_CAUSES_LIST;
          } 
         final Donation donation = new Donation();
         cause.addDonation(donation);
         donation.setDonationDate(LocalDate.now());
-        model.put("donation", donation);
+        model.put(CauseController.donacion, donation);
         return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
     }
 
@@ -130,10 +132,10 @@ public class CauseController {
     	   if (cause.getIsClosed()){
                result.rejectValue("client", "closed");
                result.rejectValue("amount", "closed");
-               return "redirect:/causes";
+               return CauseController.VIEW_CAUSES_LIST;
            } 
             if (result.hasErrors()) {
-                model.put("donation", donation);
+                model.put(CauseController.donacion, donation);
                 return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
             } else {
             	final Owner principal = this.ownerService.getPrincipal();
@@ -141,7 +143,7 @@ public class CauseController {
             	if((cause.getBudgetTarget()- updateBudget)==0) {
                 	cause.setIsClosed(true);
                 }else if((cause.getBudgetTarget()- updateBudget)<0){
-                	model.put("donation", donation);
+                	model.put(CauseController.donacion, donation);
                 	result.rejectValue("amount", "passLimits", "The amount of the donation pass the limit of the cause. Total amount available: "+
                 	(cause.getBudgetTarget()-cause.getTotalBudget()));
                     return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
@@ -155,7 +157,7 @@ public class CauseController {
                        
             } 
        
-        return "redirect:/causes";
+        return CauseController.VIEW_CAUSES_LIST;
         }
 	
 	@GetMapping("/causes/{causeId}")

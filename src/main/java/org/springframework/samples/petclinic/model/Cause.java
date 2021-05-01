@@ -100,7 +100,7 @@ public class Cause extends BaseEntity {
 	}
 
 	
-	public Boolean getIsClosed() {
+	public boolean getIsClosed() {
 		return this.isClosed;
 	}
 
@@ -139,7 +139,7 @@ public class Cause extends BaseEntity {
 	}
 
 	 public List<Donation> getDonations() {
-	        List<Donation> sortedDonations = new ArrayList<>(this.getDonationsInternal());
+	        final List<Donation> sortedDonations = new ArrayList<>(this.getDonationsInternal());
 	        PropertyComparator.sort(sortedDonations, new MutableSortDefinition("date", false, false));
 	        return Collections.unmodifiableList(sortedDonations);
 	    }

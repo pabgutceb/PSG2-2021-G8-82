@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
@@ -39,19 +40,18 @@ public class VetService {
 
 	private final VetRepository vetRepository;
 
-	
 
 	@Autowired
 	public VetService(final VetRepository vetRepository) {
 		this.vetRepository = vetRepository;
-		
-		}		
 
-	@Transactional(readOnly = true)	
+	}
+
+	@Transactional(readOnly = true)
 	public Collection<Vet> findVets() throws DataAccessException {
 		return this.vetRepository.findAll();
-	}	
-	
+	}
+
 	@Transactional(readOnly = true)
 	public Vet findVetById(final int id) throws DataAccessException {
 		return this.vetRepository.findById(id);
@@ -64,15 +64,15 @@ public class VetService {
 	public List<Specialty> findSpecialties() throws DataAccessException {
 		return this.vetRepository.findSpecialties();
 	}
-	
 
 	@Transactional(rollbackFor = DuplicatedVetNameException.class)
 	public void saveVet(final Vet vet) throws DataAccessException, DuplicatedVetNameException {
-		final Vet otherVet= this.vetRepository.getVetByName(vet.getFirstName(),vet.getLastName());
-        if (StringUtils.hasLength(vet.getFirstName()) && StringUtils.hasLength(vet.getLastName()) && (otherVet!= null && otherVet.getId()!=vet.getId())) {            	
-        	throw new DuplicatedVetNameException();
-        }else
-    		this.vetRepository.save(vet);              
-		}			
+		final Vet otherVet = this.vetRepository.getVetByName(vet.getFirstName(), vet.getLastName());
+		if (StringUtils.hasLength(vet.getFirstName()) && StringUtils.hasLength(vet.getLastName()) && (otherVet != null && otherVet.getId() != vet.getId())) {
+			throw new DuplicatedVetNameException();
+		} else {
+			this.vetRepository.save(vet);
+		}
+	}
 
 }

@@ -33,6 +33,12 @@ public class AdoptionsController {
 			"adoptionRequests/createOrUpdateAdoptionRequestForm";
 	private static final String ADOPTION_APPLICATION_CREATE_OR_UPDATE_FORM = 
 			"adoptionRequests/createOrUpdateAdoptionApplicationForm";
+	private static final String VIEW_ADOPTION_LIST = "redirect:/adoptions";
+	private static final String isFormDisabled = "isFormDisabled";
+	private static final String adoptionRequestString = "adoptionRequest";
+	private static final String messageCode = "messageCode";
+	private static final String messageArgument = "messageArgument";
+	private static final String messageType = "messageType";
 	
 	@Autowired
 	private AdoptionRequestService adoptionRequestService;
@@ -57,28 +63,29 @@ public class AdoptionsController {
 		
 		if(!newAdoptionRequest.getOwner().equals(pet.getOwner())){
 			model.put("pet", pet);
-			model.put("isFormDisabled", true);
+			model.put(AdoptionsController.isFormDisabled, true);
 
-			model.put("adoptionRequest", newAdoptionRequest);
-			model.put("messageCode", "error.ownerNotAuthorized");
-			model.put("messageArgument", pet.getOwner().getLastName());
-			model.put("messageType", "danger");
-			return AdoptionsController.VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
+			model.put(AdoptionsController.adoptionRequestString, newAdoptionRequest);
+			model.put(AdoptionsController.messageCode, "error.ownerNotAuthorized");
+			model.put(AdoptionsController.messageArgument, pet.getOwner().getLastName());
+			model.put(AdoptionsController.messageType, "danger");
 		}else if(!adoptablePets.contains(pet)) {
 			model.put("pet", pet);
-			model.put("isFormDisabled", true);
+			model.put(AdoptionsController.isFormDisabled, true);
 			
-			model.put("adoptionRequest", newAdoptionRequest);
-			model.put("messageCode", "error.petAlreadyForAdoption");
-			model.put("messageArgument", pet.getName());
-			model.put("messageType", "danger");
-			return AdoptionsController.VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
+			model.put(AdoptionsController.adoptionRequestString, newAdoptionRequest);
+			model.put(AdoptionsController.messageCode, "error.petAlreadyForAdoption");
+			model.put(AdoptionsController.messageArgument, pet.getName());
+			model.put(AdoptionsController.messageType, "danger");
 		}
-		model.put("isFormDisabled", false);
-		model.put("pet", pet);
-		model.put("adoptablePets", adoptablePets);
-		model.put("adoptionRequest", newAdoptionRequest);
+		else {
+			model.put(AdoptionsController.isFormDisabled, false);
+			model.put("pet", pet);
+			model.put("adoptablePets", adoptablePets);
+			model.put(AdoptionsController.adoptionRequestString, newAdoptionRequest);	
+		}
 		return AdoptionsController.VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
+
 	}
 	
 	@PostMapping(value="/requests/pet/{pet}/new")
@@ -88,18 +95,18 @@ public class AdoptionsController {
 			final ModelMap model, final RedirectAttributes redirectAttributes) {
 		
 		if (result.hasErrors()) {
-			model.put("adoptionRequest", adoptionRequest);
+			model.put(AdoptionsController.adoptionRequestString, adoptionRequest);
 			return AdoptionsController.VIEW_ADOPTION_REQUEST_CREATE_OR_UPDATE_FORM;
 		}else {
 			try {
 				this.adoptionRequestService.saveAdoptionRequest(adoptionRequest);
-				redirectAttributes.addFlashAttribute("messageCode", "adoptions.newAdoptionRequestSuccess");
-				redirectAttributes.addFlashAttribute("messageArgument", adoptionRequest.getPet().getName());
-				redirectAttributes.addFlashAttribute("messageType", "success");
+				redirectAttributes.addFlashAttribute(AdoptionsController.messageCode, "adoptions.newAdoptionRequestSuccess");
+				redirectAttributes.addFlashAttribute(AdoptionsController.messageArgument, adoptionRequest.getPet().getName());
+				redirectAttributes.addFlashAttribute(AdoptionsController.messageType, "success");
 				return "redirect:/";
 			} catch (final PetTransactionFromUnauthorizedOwner e) {
 				adoptionRequest.setPet(null);
-				model.put("adoptionRequest", adoptionRequest);
+				model.put(AdoptionsController.adoptionRequestString, adoptionRequest);
 				return String.format("redirect:/adoptions/requests/pet/%d/new", petId);
 			}
 			
@@ -128,7 +135,7 @@ public class AdoptionsController {
 		final AdoptionRequest adoptionRequest = this.adoptionRequestService.findById(adoptionRequestId);
 		final Owner owner = this.ownerService.getPrincipal();
 		if(adoptionRequest.getOwner().equals(owner)) {
-			return "redirect:/adoptions";
+			return  AdoptionsController.VIEW_ADOPTION_LIST;
 		}
 		final AdoptionApplication adoptionApplication = new AdoptionApplication();
 		adoptionApplication.setAdoptionRequest(this.adoptionRequestService.findById(adoptionRequestId));
@@ -146,7 +153,7 @@ public class AdoptionsController {
 		}
 		else {
 				this.adoptionApplicationService.saveAdoptionApplication(adoptionApplication);
-				return "redirect:/adoptions";
+				return  AdoptionsController.VIEW_ADOPTION_LIST;
 		}
 	}
 	
@@ -173,13 +180,13 @@ public class AdoptionsController {
 		try {
 			this.adoptionRequestService.saveAdoptionRequest(request);
 		} catch (final PetTransactionFromUnauthorizedOwner e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		
 		
 				
-        return "redirect:/adoptions";
+        return  AdoptionsController.VIEW_ADOPTION_LIST;
     }
 
 }

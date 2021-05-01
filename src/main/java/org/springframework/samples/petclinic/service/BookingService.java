@@ -20,7 +20,7 @@ public class BookingService {
 	
 
 	@Transactional(readOnly = true)
-	public Booking findBookingbyId(Integer id) throws DataAccessException {
+	public Booking findBookingbyId(final Integer id) throws DataAccessException {
 		return this.bookingRepository.findBookingById(id);
 	}
 
@@ -29,9 +29,12 @@ public class BookingService {
 		final Integer otherBooking = (int) this.bookingRepository.getBookingByDate(booking.getStartDate(),booking.getFinishDate(),booking.getPet().getId()).stream().filter(b->b.getId()!=booking.getId()).count();
         if (otherBooking!=0) {            	
         	throw new DateOverlapException();
-        }else
-    		this.bookingRepository.save(booking);              
-		}	
+        }
+        else {
+    		this.bookingRepository.save(booking); 
+        }
+	}
+			
 	
 	public void delete(final Booking booking) {
 		booking.setCanceled(true);

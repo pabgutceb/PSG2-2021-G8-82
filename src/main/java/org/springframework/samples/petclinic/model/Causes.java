@@ -30,14 +30,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Causes {
 
-	private List<Cause> causes;
+	private List<Cause> causesList;
 
 	@XmlElement
 	public List<Cause> getCauseList() {
-		if (this.causes == null) {
-			this.causes= new ArrayList<>();
+		if (this.causesList == null) {
+			this.causesList = new ArrayList<>();
 		}
-		return this.causes;
+		return this.causesList;
 	}
 
 }

@@ -62,8 +62,7 @@ public interface OwnerRepository extends CrudRepository<Owner, Integer> {
 	@Query("DELETE FROM Owner o WHERE o = ?1")
 	void delete(Owner o);
 	
-	//@Query("SELECT owner FROM Owner owner where owner.username=?1")
-	//public Owner findByUsername(String username);
+
 	public Owner findByUserUsername(String username);
 
 }

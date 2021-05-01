@@ -52,6 +52,7 @@ public class VetController {
 
 	private static final String VIEWS_VETS_CREATE_OR_UPDATE_FORM = "vets/createOrUpdateVetForm";
 	private final VetService vetService;
+	private static final String VIEW_VETS = "redirect:/vets";
 	
 
 	@Autowired
@@ -94,11 +95,11 @@ public class VetController {
 		        } else {
                     try{
                     	this.vetService.saveVet(vet);
-                    }catch(DuplicatedVetNameException ex){
+                    }catch(final DuplicatedVetNameException ex){
                         result.rejectValue("lastName", "duplicate", "already exists");
                         return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
                     }
-		            return "redirect:/vets";
+		            return VetController.VIEW_VETS;
 		        }
 	}
 	
@@ -117,11 +118,11 @@ public class VetController {
             vet.setId(vetId);
             try{
             this.vetService.saveVet(vet);
-            }catch(DuplicatedVetNameException ex){
+            }catch(final DuplicatedVetNameException ex){
                 result.rejectValue("lastName", "duplicate", "already exists");
                 return VetController.VIEWS_VETS_CREATE_OR_UPDATE_FORM;
             }
-            return "redirect:/vets";
+            return VetController.VIEW_VETS;
         }
 	}
 
@@ -144,6 +145,6 @@ public class VetController {
 		} else {
 			redirectAttributes.addFlashAttribute("message", "¡Veterinario no encontrado!");
 		}
-		return "redirect:/vets";
+		return VetController.VIEW_VETS;
 	}
 }

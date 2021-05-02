@@ -55,7 +55,7 @@ public class PetController {
 	private final PetService petService;
     private final OwnerService ownerService;
     
-    private final static String VIEW_OWNER = "redirect:/owners/{ownerId}";
+    private static final String VIEW_OWNER = "redirect:/owners/{ownerId}";
     
    
 

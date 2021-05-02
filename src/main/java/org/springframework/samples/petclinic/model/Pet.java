@@ -15,9 +15,14 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,14 +33,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Simple business object representing a pet.
@@ -67,13 +67,23 @@ public class Pet extends NamedEntity {
 	private Set<Booking> bookings;
 
 	public List<Booking> getBookings() {
-		List<Booking> res = bookings.stream().filter(b->b.getCanceled().equals(false))
+		List<Booking> res = this.bookings.stream().filter(b->b.getCanceled().equals(false))
 				.filter(b->b.getStartDate().isAfter(LocalDate.now()))
 				.collect(Collectors.toList());
 		res.sort(Comparator.comparing(Booking::getStartDate));
 		return res;
 	}
 
+	public List<Booking> getAllBookings() {
+		
+		return this.bookings.stream().collect(Collectors.toList());
+	}
+	
+	public void setAllBookings(List<Booking> bookings) {
+		
+		this.bookings=bookings.stream().collect(Collectors.toSet());
+	}
+	
 	public void setBookings(Set<Booking> bookings) {
 		this.bookings = bookings;
 	}
@@ -114,13 +124,13 @@ public class Pet extends NamedEntity {
 	}
 
 	public List<Visit> getVisits() {
-		List<Visit> sortedVisits = new ArrayList<>(getVisitsInternal());
+		List<Visit> sortedVisits = new ArrayList<>(this.getVisitsInternal());
 		PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));
 		return Collections.unmodifiableList(sortedVisits);
 	}
 
 	public void addVisit(Visit visit) {
-		getVisitsInternal().add(visit);
+		this.getVisitsInternal().add(visit);
 		visit.setPet(this);
 	}
 

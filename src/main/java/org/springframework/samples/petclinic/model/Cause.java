@@ -9,8 +9,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -28,10 +26,6 @@ public class Cause extends BaseEntity {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cause")
 	private Set<Donation> donations;
-	
-	@ManyToOne
-	@JoinColumn(name = "owner_id")
-	private Owner owner;
 	
 	@NotBlank
 	@Column(name = "name")
@@ -110,17 +104,6 @@ public class Cause extends BaseEntity {
 	}
 
 
-	
-	public Owner getOwner() {
-		return this.owner;
-	}
-
-	public void setOwner(final Owner owner) {
-		this.owner = owner;
-	}
-
-
-	
 	public Double getTotalBudget() {
 		return this.totalBudget;
 	}

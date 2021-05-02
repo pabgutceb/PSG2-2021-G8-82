@@ -65,8 +65,7 @@ public class CauseController {
 		if(result.hasErrors()) {
 			return CauseController.VIEWS_CAUSES_CREATE_OR_UPDATE_FORM;
 		} else {
-			final Owner principal = this.ownerService.getPrincipal();
-			cause.setOwner(principal);
+			
 			this.causeService.saveCause(cause);
 			return CauseController.VIEW_CAUSES_LIST;
 		}

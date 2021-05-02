@@ -1,8 +1,6 @@
 package org.springframework.samples.petclinic.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,30 +11,30 @@ import org.springframework.samples.petclinic.service.exceptions.DateOverlapExcep
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class BookingServiceTests {
+class BookingServiceTests {
 	
 	@Autowired
 	protected BookingService bookingService;
 	
 	@Test
 	void shouldFindBookingCorrectId() {
-		Booking existingBooking = bookingService.findBookingbyId(9);
-		assertThat(existingBooking.getPet().getName()).isEqualTo("Samantha");
-		assertThat(existingBooking.getCanceled()).isFalse();
+		Booking existingBooking = this.bookingService.findBookingbyId(9);
+		Assertions.assertThat(existingBooking.getPet().getName()).isEqualTo("Samantha");
+		Assertions.assertThat(existingBooking.getCanceled()).isFalse();
 	}
 	
 	@Test
 	void shouldSoftDeleteBooking() {
-		Booking existingBooking = bookingService.findBookingbyId(9);
-		assertThat(existingBooking.getCanceled()).isFalse();
+		Booking existingBooking = this.bookingService.findBookingbyId(9);
+		Assertions.assertThat(existingBooking.getCanceled()).isFalse();
 		
-		bookingService.delete(existingBooking);
-		assertThat(existingBooking.getCanceled()).isTrue();
+		this.bookingService.delete(existingBooking);
+		Assertions.assertThat(existingBooking.getCanceled()).isTrue();
 	}
 	
 	@Test
 	void shouldInsertBooking() throws DataAccessException, DateOverlapException {
-		Booking existingBooking = bookingService.findBookingbyId(10);
+		Booking existingBooking = this.bookingService.findBookingbyId(10);
 		
 		Booking newBooking = new Booking();
 		newBooking.setPet(existingBooking.getPet());
@@ -44,15 +42,15 @@ public class BookingServiceTests {
 		newBooking.setStartDate(existingBooking.getStartDate().plusMonths(8));
 		newBooking.setFinishDate(existingBooking.getFinishDate().plusMonths(8));
 		
-		bookingService.saveBooking(newBooking);
-		assertThat(bookingService.findBookingbyId(existingBooking.getId()+1)).isNotNull();
+		this.bookingService.saveBooking(newBooking);
+		Assertions.assertThat(this.bookingService.findBookingbyId(existingBooking.getId()+1)).isNotNull();
 		
 	}
 	
 	@Test
 	void shouldNotInsertOverlappingBooking() {
-	    Exception dateOverlapException = assertThrows(DateOverlapException.class, () -> {
-			Booking existingBooking = bookingService.findBookingbyId(10);
+	    Exception dateOverlapException = org.junit.jupiter.api.Assertions.assertThrows(DateOverlapException.class, () -> {
+			Booking existingBooking = this.bookingService.findBookingbyId(10);
 			
 			Booking newBooking = new Booking();
 			newBooking.setPet(existingBooking.getPet());
@@ -60,10 +58,10 @@ public class BookingServiceTests {
 			newBooking.setStartDate(existingBooking.getStartDate());
 			newBooking.setFinishDate(existingBooking.getFinishDate());
 			
-			bookingService.saveBooking(newBooking);
+			this.bookingService.saveBooking(newBooking);
 	    });
 	    
-	    assertThat(dateOverlapException.getMessage()).isNullOrEmpty();
+	    Assertions.assertThat(dateOverlapException.getMessage()).isNullOrEmpty();
 	}
 	
 

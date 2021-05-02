@@ -134,7 +134,7 @@ public class PetService {
 		for (final Visit v : pet.getVisits()) {
 			this.visitRepository.delete(v);
 		}
-		for (final Booking b : pet.getBookings()) {
+		for (final Booking b : pet.getAllBookings()) {
 			this.bookingRepository.delete(b);
 		}
 		this.petRepository.delete(pet);

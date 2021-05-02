@@ -91,8 +91,8 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
 
-INSERT INTO causes VALUES (1,'3000.0',  'Recolecta para ayudar a los perros de la calle',false,'Save Dogs',  'PETSONG', '0.0',3);
-INSERT INTO causes VALUES (2, '4000.0','Recolecta para ayudar a los gatos de la calle',false,'Save Cats',    'CATSONG','0.0',2 );
+INSERT INTO causes VALUES (1,'3000.0',  'Recolecta para ayudar a los perros de la calle',false,'Save Dogs',  'PETSONG', '0.0');
+INSERT INTO causes VALUES (2, '4000.0','Recolecta para ayudar a los gatos de la calle',false,'Save Cats',    'CATSONG','0.0');
 
 
 INSERT INTO bookings(id,pet_id,start_date,finish_date,canceled) VALUES (1, 1, '2021-07-11','2021-07-12', false);

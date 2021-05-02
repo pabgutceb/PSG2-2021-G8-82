@@ -19,10 +19,13 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.model.AdoptionApplication;
+import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.repository.AdoptionApplicationRepository;
+import org.springframework.samples.petclinic.repository.AdoptionRequestRepository;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
-import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,18 +39,25 @@ import org.springframework.transaction.annotation.Transactional;
 public class OwnerService {
 
 	private final OwnerRepository ownerRepository;	
-	private final PetRepository petRepository;
+	private final AdoptionRequestRepository adoptionRequestRepository;
+	private final AdoptionApplicationRepository adoptionApplicationRepository;
 	
 	@Autowired
 	private UserService userService;
 	
 	@Autowired
+	private PetService petService;
+	
+	@Autowired
 	private AuthoritiesService authoritiesService;
 
 	@Autowired
-	public OwnerService(final OwnerRepository ownerRepository, final PetRepository petRepository) {
+	public OwnerService(final OwnerRepository ownerRepository, 
+		final AdoptionRequestRepository adoptionRequestRepository,final AdoptionApplicationRepository adoptionApplicationRepository
+		) {
 		this.ownerRepository = ownerRepository;
-		this.petRepository = petRepository;
+		this.adoptionRequestRepository = adoptionRequestRepository;
+		this.adoptionApplicationRepository = adoptionApplicationRepository;
 	}	
 
 	@Transactional(readOnly = true)
@@ -71,9 +81,18 @@ public class OwnerService {
 	}
 	
 	public void delete(final Owner owner) {
-		for (final Pet p : owner.getPets()) {
-			this.petRepository.delete(p);
+		if(this.adoptionRequestRepository.findByOwner(owner)!= null) {
+			AdoptionRequest request = this.adoptionRequestRepository.findByOwner(owner);
+			
+			for (final AdoptionApplication p : this.adoptionApplicationRepository.findByAdoptionRequest(request)) {
+				this.adoptionApplicationRepository.delete(p);
+			}
+			this.adoptionRequestRepository.delete(request);
 		}
+		for (final Pet p : owner.getPets()) {
+			this.petService.delete(p);
+		}
+		
 		this.ownerRepository.delete(owner);
 	}
 	

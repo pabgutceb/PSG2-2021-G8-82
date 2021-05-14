@@ -48,11 +48,11 @@ In the retrospective meeting, the team has a discussion about those results.
 | ----- | :----: | :-------: | :------: | :------------: | :---: |
 | Day 1 |   😟    | :smiley:  | :smiley: | :neutral_face: |   😃   |
 | Day 2 |   😃  | :smiley:  | :smiley: |    :smiley:    |      :smiley:  |
-| Day 3 |        |      :smiley:      |     :smiley:      | :neutral_face: |    :smiley:    |
-| Day 4 |       |      :smiley:      |     :smiley:      |    :smiley:    |   :smiley:     |
-| Day 5 |       |       :smiley:     |      :smiley:     |        :smiley:         |   :smiley:     |
-| Day 6 |         |       :smiley:     |       :smiley:    |     :smiley:            |   :neutral_face:    |
-| Day 7 |        |       :smiley:    |      :neutral_face:    | :smiley: |   :smiley:   |
+| Day 3 |        |      :smiley:      |     :smiley:      | :neutral_face: | :neutral_face:      |
+| Day 4 |       |      :smiley:      |     :smiley:      |    :smiley:    |        |
+| Day 5 |       |       :smiley:     |      :smiley:     |        :smiley:         |        |
+| Day 6 |         |       :smiley:     |       :smiley:    |     :smiley:            |      |
+| Day 7 |        |       :smiley:    |      :neutral_face:    | :smiley: |     |
 | Day 8 |  | |  |  |  |
 | Day 9 | | | |  | |
 | Day 10 | | |  |  | |

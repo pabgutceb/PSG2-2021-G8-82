@@ -49,7 +49,7 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 1 |   😟    | :smiley:  | :smiley: | :neutral_face: |   😃   |
 | Day 2 |   😃  | :smiley: | :smiley: |    :smiley:    |      :smiley:  |
 | Day 3 |    :smiley:    |     |        |:smiley: | :neutral_face:      |
-| Day 4 |       |    |       |      |        |:smiley:
+| Day 4 |       |    |       |      |      :smiley:  |
 | Day 5 |       |    |         |                |        |
 | Day 6 |         |     |     |              |      |
 | Day 7 |        |    |        |  |     |

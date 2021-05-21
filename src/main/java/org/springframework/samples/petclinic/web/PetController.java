@@ -94,7 +94,7 @@ public class PetController {
 	}
 
 	@PostMapping(value = "/pets/new")
-	public String processCreationForm(final Owner owner, @Valid final Pet pet, final BindingResult result, final ModelMap model) {		
+	public String processCreationForm(final Owner owner, @Valid final Pet pet, BindingResult result, ModelMap model) {		
 		if (result.hasErrors()) {
 			System.err.println(result.getAllErrors());
 			model.put("pet", pet);

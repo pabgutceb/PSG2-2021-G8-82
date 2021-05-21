@@ -19,7 +19,7 @@
             <c:if test="${pet['new']}"><fmt:message key="newPet"/></c:if>
         </h2>
         <form:form modelAttribute="pet"
-                   class="form-horizontal">
+                   class="form-horizontal" id="add-pet-form">
             <input type="hidden" name="id" value="${pet.id}"/>
             <div class="form-group has-feedback">
                 <div class="form-group">

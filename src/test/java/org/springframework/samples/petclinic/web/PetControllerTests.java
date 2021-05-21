@@ -112,7 +112,7 @@ class PetControllerTests {
 							.param("name", "Betty")
 							.param("type", "hamster")
 							.param("birthDate", "2015/02/12"))
-				.andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 				;
 	}
     

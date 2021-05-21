@@ -134,7 +134,6 @@ public class CauseController {
                return CauseController.VIEW_CAUSES_LIST;
            } 
             if (result.hasErrors()) {
-            	System.out.println(result.getAllErrors());
                 model.put(CauseController.donacion, donation);
                 return CauseController.VIEWS_DONATIONS_CREATE_OR_UPDATE_FORM;
             } else {

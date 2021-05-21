@@ -19,7 +19,6 @@ import java.util.Collection;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
@@ -138,7 +137,9 @@ public class PetController {
 		}
 		else {
                         final Pet petToUpdate=this.petService.findPetById(petId);
-			BeanUtils.copyProperties(pet, petToUpdate, "id","owner","visits");                                                                                  
+                        petToUpdate.setBirthDate(pet.getBirthDate());
+                        petToUpdate.setName(pet.getName());
+                        petToUpdate.setType(pet.getType());
                     try {                    
                         this.petService.savePet(petToUpdate);                    
                     } catch (final DuplicatedPetNameException ex) {

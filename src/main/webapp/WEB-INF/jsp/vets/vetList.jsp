@@ -53,11 +53,5 @@
             </td>      
         </tr>
     	
-        <tr>
-            <td>
-                <a href="<spring:url value="/vets.xml" htmlEscape="true" />"><fmt:message key="viewAs"/> XML</a>
-            </td>      
-
-        </tr>
     </table>
 </petclinic:layout>

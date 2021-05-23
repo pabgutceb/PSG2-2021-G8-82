@@ -35,6 +35,7 @@ public class CauseController {
 	private final DonationService donationService;
 	private static final String VIEW_CAUSES_LIST = "redirect:/causes";
 	private static final String donacion = "donation";
+	private static final String causa = "cause";
 	
 	@Autowired
 	public CauseController(final CauseService causeService, final OwnerService ownerService,final DonationService donationService) {
@@ -61,13 +62,36 @@ public class CauseController {
 	}
 	
 	@PostMapping(value = "/causes/new")
-	public String processCreationForm(@Valid final Cause cause, final BindingResult result) {
-		if(result.hasErrors()) {
+	public String processCreationForm(@Valid final Cause cause, final BindingResult result, final ModelMap model) {
+		if (result.hasErrors()) {
+			for (int x = 0; x < cause.getName().length(); x++) {
+				final char c = cause.getName().charAt(x);
+				// Si no está entre a y z, ni entre A y Z, ni es un espacio
+				if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {
+					result.rejectValue("name", "invalidFormat", "No se admiten caracteres numéricos en el nombre");
+					return CauseController.VIEWS_CAUSES_CREATE_OR_UPDATE_FORM;
+
+				}
+				
+
+			}
 			return CauseController.VIEWS_CAUSES_CREATE_OR_UPDATE_FORM;
-		} else {
-			
+		}
+		else {
+			for (int x = 0; x < cause.getName().length(); x++) {
+				final char c = cause.getName().charAt(x);
+				// Si no está entre a y z, ni entre A y Z, ni es un espacio
+				if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {
+					result.rejectValue("name", "invalidFormat", "No se admiten caracteres numéricos en el nombre");
+					return CauseController.VIEWS_CAUSES_CREATE_OR_UPDATE_FORM;
+
+				}
+				
+
+			}
 			this.causeService.saveCause(cause);
 			return CauseController.VIEW_CAUSES_LIST;
+
 		}
 	}
 	

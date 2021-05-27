@@ -37,17 +37,17 @@
 
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					<span><fmt:message key="veterinarians"/></span>
 				</petclinic:menuItem>
 				
 				<petclinic:menuItem active="${name eq 'causes'}" url="/causes" title="causes">
-                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>
                     <span><fmt:message key="causes"/></span>
                 </petclinic:menuItem>
                 
                 <petclinic:menuItem active="${name eq 'adoptions'}" url="/adoptions" title="adotions">
-                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-baby-formula" aria-hidden="true"></span>
                     <span><fmt:message key="adoptions"/></span>
                 </petclinic:menuItem>
 
